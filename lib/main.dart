@@ -34,29 +34,35 @@ class MyStatelessWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('korvet korvet'),
+        title: Text('korvet korvet'),
         actions: <Widget>[
-          ElevatedButton(
-            onPressed: () {},
-            child: Text('fix me. make me small please'),
-            style: ElevatedButton.styleFrom(
-              primary: Colors.black,
-              // minimumSize: Size(0, 0),
-              // padding: EdgeInsets.all(0),
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: ElevatedButton(
+              onPressed: () {},
+              child: Row(
+                children: <Widget>[
+                  Icon(
+                    Icons.fiber_manual_record,
+                    size: 15,
+                    color: Colors.green,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    'OPEN',
+                  ),
+                ],
+              ),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.black,
+              ),
             ),
           ),
-          // Switch(
-          //   value: true,
-          //   onChanged: (bool isOpen) {},
-          // ),
-          // IconButton(
-          //   icon: const Icon(Icons.navigate_next),
-          //   // tooltip: 'Go to the next page',
-          //   onPressed: () {},
-          // ),
         ],
       ),
-      body: new Order(),
+      body: new Startup(),
     );
   }
 }
