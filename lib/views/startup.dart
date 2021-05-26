@@ -1,3 +1,4 @@
+import 'package:elok_lagi_restaurant/views/history.dart';
 import 'package:elok_lagi_restaurant/views/order.dart';
 import 'package:flutter/material.dart';
 
@@ -66,10 +67,10 @@ class _StartupState extends State<Startup> {
         ),
         onPressed: () {
           print('HISTORY Pressed');
-          // Navigator.push(
-          //   context,
-          //     MaterialPageRoute(builder: (context) => Master()),
-          //   );
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => History()),
+          );
         },
       ),
     );

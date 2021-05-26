@@ -1,11 +1,8 @@
+// import 'dart:js';
+
 import 'package:elok_lagi_restaurant/views/order.dart';
 import 'package:elok_lagi_restaurant/views/startup.dart';
 import 'package:flutter/material.dart';
-
-/// Flutter code sample for AppBar
-
-// This sample shows an [AppBar] with two simple actions. The first action
-// opens a [SnackBar], while the second action navigates to a new page.
 
 void main() => runApp(const MyApp());
 
@@ -25,11 +22,14 @@ class MyApp extends StatelessWidget {
 }
 
 /// This is the stateless widget that the main application instantiates.
-class MyStatelessWidget extends StatelessWidget {
+class MyStatelessWidget extends StatefulWidget {
   const MyStatelessWidget({Key key}) : super(key: key);
 
-  static const bool isOpen = true;
+  @override
+  _MyStatelessWidgetState createState() => _MyStatelessWidgetState();
+}
 
+class _MyStatelessWidgetState extends State<MyStatelessWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,31 +38,76 @@ class MyStatelessWidget extends StatelessWidget {
         actions: <Widget>[
           Padding(
             padding: EdgeInsets.all(10),
-            child: ElevatedButton(
-              onPressed: () {},
-              child: Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.fiber_manual_record,
-                    size: 15,
-                    color: Colors.green,
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    'OPEN',
-                  ),
-                ],
-              ),
-              style: ElevatedButton.styleFrom(
-                primary: Colors.black,
-              ),
-            ),
+            child: buildElevatedButton(),
           ),
         ],
       ),
       body: new Startup(),
+    );
+  }
+
+  ElevatedButton buildElevatedButton() {
+    return ElevatedButton(
+      onPressed: () {
+        buildShowAlert(context);
+      },
+      child: Row(
+        children: <Widget>[
+          Icon(
+            Icons.fiber_manual_record,
+            size: 15,
+            color: Colors.green,
+          ),
+          SizedBox(
+            width: 5,
+          ),
+          Text(
+            'OPEN',
+          ),
+        ],
+      ),
+      style: ElevatedButton.styleFrom(
+        primary: Colors.black,
+      ),
+    );
+  }
+
+  buildShowAlert(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Center(child: Text('Your restaurant is Open')),
+          // titlePadding: EdgeInsets.fromWindowPadding(padding, devicePixelRatio),
+          content: Text('Do you want to change your status?'),
+          actions: [
+            TextButton(
+              onPressed: () {},
+              child: Text(
+                'Close',
+                style: TextStyle(
+                  color: Colors.red,
+                ),
+              ),
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.black,
+              ),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: Text(
+                'Busy',
+                style: TextStyle(
+                  color: Colors.amber,
+                ),
+              ),
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.black,
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
