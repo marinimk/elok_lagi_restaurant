@@ -88,10 +88,112 @@ Widget buildCardCurrOrder() {
   );
 }
 
+ElevatedButton buildElevatedButton() {
+  return ElevatedButton(
+    onPressed: () {
+      // buildShowAlert(context);
+    },
+    child: Row(
+      children: <Widget>[
+        Icon(
+          Icons.fiber_manual_record,
+          size: 15,
+          color: Colors.green,
+        ),
+        SizedBox(
+          width: 5,
+        ),
+        Text(
+          'OPEN',
+        ),
+      ],
+    ),
+    style: ElevatedButton.styleFrom(
+      primary: Colors.black,
+    ),
+  );
+}
+
+buildShowAlert(BuildContext context) {
+  return showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Center(child: Text('Your restaurant is Open')),
+        // titlePadding: EdgeInsets.fromWindowPadding(padding, devicePixelRatio),
+        content: Text('Do you want to change your status?'),
+        actions: [
+          OutlinedButton(
+            onPressed: () {},
+            child: Row(children: [
+              Icon(
+                Icons.fiber_manual_record,
+                size: 15,
+                color: Colors.red,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text(
+                'Close',
+                style: TextStyle(
+                  color: Colors.red,
+                ),
+              ),
+            ]),
+            style: OutlinedButton.styleFrom(
+              side: BorderSide(
+                width: 1.5,
+              ),
+              // backgroundColor: Colors.black,
+            ),
+          ),
+          OutlinedButton(
+            onPressed: () {},
+            child: Row(
+              children: [
+                Icon(
+                  Icons.fiber_manual_record,
+                  size: 15,
+                  color: Colors.amber,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  'Busy',
+                  style: TextStyle(
+                    color: Colors.amber,
+                  ),
+                ),
+              ],
+            ),
+            style: OutlinedButton.styleFrom(
+              side: BorderSide(
+                width: 1.5,
+              ),
+              // backgroundColor: Colors.black,
+            ),
+          ),
+        ],
+      );
+    },
+  );
+}
+
 class _Order extends State<Order> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('ORDER'),
+        actions: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: buildElevatedButton(),
+          ),
+        ],
+      ),
       body: Container(
         padding: EdgeInsets.all(5),
         color: Color(0xffE8E8E8),
