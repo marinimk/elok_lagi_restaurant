@@ -1,3 +1,4 @@
+import 'package:elok_lagi_restaurant/views/faqList.dart';
 import 'package:elok_lagi_restaurant/views/history.dart';
 import 'package:elok_lagi_restaurant/views/menu.dart';
 import 'package:elok_lagi_restaurant/views/order.dart';
@@ -136,8 +137,10 @@ class _StartupState extends State<Startup> {
         ),
         onPressed: () {
           print('FAQ Pressed');
-          // Navigator.push(
-          //   );
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => FAQList()),
+          );
         },
       ),
     );
@@ -147,6 +150,7 @@ class _StartupState extends State<Startup> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('MERCHANT\'S APP'),
         actions: <Widget>[
           Padding(

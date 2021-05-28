@@ -1,6 +1,7 @@
 // import 'dart:js';
 
 // import 'package:elok_lagi_restaurant/views/order.dart';
+import 'package:elok_lagi_restaurant/views/signin.dart';
 import 'package:elok_lagi_restaurant/views/startup.dart';
 // import 'package:elok_lagi_restaurant/utils/appbar.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +44,7 @@ class _MyStatelessWidgetState extends State<MyStatelessWidget> {
       //     ),
       //   ],
       // ),
-      body: new Startup(),
+      body: new SignIn(),
     );
   }
 
