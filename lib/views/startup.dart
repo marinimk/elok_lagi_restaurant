@@ -183,7 +183,7 @@ class _StartupState extends State<Startup> {
   ElevatedButton buildElevatedButton() {
     return ElevatedButton(
       onPressed: () {
-        // buildShowAlert(context);
+        buildShowAlert(context);
       },
       child: Row(
         children: <Widget>[
@@ -215,6 +215,33 @@ class _StartupState extends State<Startup> {
           // titlePadding: EdgeInsets.fromWindowPadding(padding, devicePixelRatio),
           content: Text('Do you want to change your status?'),
           actions: [
+            OutlinedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Row(children: [
+                Icon(
+                  Icons.close,
+                  size: 15,
+                  color: Colors.red,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  'Cancel',
+                  style: TextStyle(
+                    color: Colors.red,
+                  ),
+                ),
+              ]),
+              style: OutlinedButton.styleFrom(
+                side: BorderSide(
+                  width: 1.5,
+                ),
+                // backgroundColor: Colors.black,
+              ),
+            ),
             OutlinedButton(
               onPressed: () {},
               child: Row(children: [

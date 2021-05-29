@@ -1,3 +1,8 @@
+import 'dart:ui';
+
+import 'package:elok_lagi_restaurant/views/faqList.dart';
+import 'package:elok_lagi_restaurant/views/history.dart';
+import 'package:elok_lagi_restaurant/views/menu.dart';
 import 'package:elok_lagi_restaurant/views/newOrder.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +15,112 @@ class _Order extends State<Order> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Container(
+        color: Colors.green,
+        child: Drawer(
+          child: ListView(
+            children: [
+              SizedBox(
+                height: 300,
+                child: DrawerHeader(
+                  // padding: EdgeInsets.zero,
+                  child: Stack(
+                    alignment: Alignment.bottomLeft,
+                    // fit: StackFit.passthrough,
+                    children: [
+                      Opacity(
+                        opacity: 0.8,
+                        child: Image.asset(
+                          'assets/images/magik.png',
+                        ),
+                      ),
+                      Text(
+                        'MAR\'S DOPE ASS CAFE SWEG',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              ListTile(
+                onTap: () {
+                  print('HISTORY Pressed');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => History()),
+                  );
+                },
+                tileColor: Colors.black12,
+                title: Text(
+                  'HISTORY',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 25,
+                  ),
+                ),
+              ),
+              Divider(
+                height: 1,
+              ),
+              ListTile(
+                onTap: () {
+                  print('MENU Pressed');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Menu()),
+                  );
+                },
+                tileColor: Colors.black12,
+                title: Text(
+                  'MENU',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 25,
+                  ),
+                ),
+              ),
+              Divider(
+                height: 1,
+              ),
+              ListTile(
+                onTap: () {
+                  print('FAQ Pressed');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => FAQList()),
+                  );
+                },
+                tileColor: Colors.black12,
+                title: Text(
+                  'FAQ',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 25,
+                  ),
+                ),
+              ),
+              Divider(
+                height: 1,
+              ),
+              ListTile(
+                tileColor: Colors.black12,
+                title: Text(
+                  'MARINI',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 25,
+                  ),
+                ),
+              ),
+              // Text('MUSTAFA'),
+              // Text('KAMAL'),
+            ],
+          ),
+        ),
+      ),
       appBar: AppBar(
         title: Text('ORDER'),
         actions: <Widget>[
