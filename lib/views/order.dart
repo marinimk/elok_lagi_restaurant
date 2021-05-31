@@ -102,21 +102,6 @@ class _Order extends State<Order> {
                   ),
                 ),
               ),
-              Divider(
-                height: 1,
-              ),
-              ListTile(
-                tileColor: Colors.black12,
-                title: Text(
-                  'MARINI',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 25,
-                  ),
-                ),
-              ),
-              // Text('MUSTAFA'),
-              // Text('KAMAL'),
             ],
           ),
         ),
