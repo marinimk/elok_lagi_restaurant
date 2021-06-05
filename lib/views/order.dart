@@ -29,13 +29,13 @@ class _Order extends State<Order> {
                     // fit: StackFit.passthrough,
                     children: [
                       Opacity(
-                        opacity: 0.8,
+                        opacity: 1,
                         child: Image.asset(
                           'assets/images/magik.png',
                         ),
                       ),
                       Text(
-                        'MAR\'S DOPE ASS CAFE SWEG',
+                        'CHUCHA FOODIE',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 30,
@@ -96,6 +96,26 @@ class _Order extends State<Order> {
                 tileColor: Colors.black12,
                 title: Text(
                   'FAQ',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 25,
+                  ),
+                ),
+              ),
+              Divider(
+                height: 1,
+              ),
+              ListTile(
+                onTap: () {
+                  print('DASHBOARD Pressed');
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => FAQList()),
+                  // );
+                },
+                tileColor: Colors.black12,
+                title: Text(
+                  'DASHBOARD',
                   style: TextStyle(
                     fontWeight: FontWeight.w800,
                     fontSize: 25,
@@ -262,6 +282,33 @@ class _Order extends State<Order> {
           // titlePadding: EdgeInsets.fromWindowPadding(padding, devicePixelRatio),
           content: Text('Do you want to change your status?'),
           actions: [
+            OutlinedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Row(children: [
+                Icon(
+                  Icons.close,
+                  size: 15,
+                  color: Colors.red,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  'Cancel',
+                  style: TextStyle(
+                    color: Colors.red,
+                  ),
+                ),
+              ]),
+              style: OutlinedButton.styleFrom(
+                side: BorderSide(
+                  width: 1.5,
+                ),
+                // backgroundColor: Colors.black,
+              ),
+            ),
             OutlinedButton(
               onPressed: () {},
               child: Row(children: [
