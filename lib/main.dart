@@ -1,3 +1,4 @@
+import 'package:elok_lagi_restaurant/models/users.dart';
 import 'package:flutter/material.dart';
 import 'package:elok_lagi_restaurant/models/restaurant.dart';
 import 'package:provider/provider.dart';
@@ -13,8 +14,8 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
-    return StreamProvider<Restaurants>.value(
-      initialData: Restaurants(),
+    return StreamProvider<Users>.value(
+      initialData: Users(),
       value: AuthService().restaurant,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
