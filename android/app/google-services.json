@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "364396026098",
+    "project_id": "elok-lagi",
+    "storage_bucket": "elok-lagi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:364396026098:android:80a296ab820a5c9d29d86b",
+        "android_client_info": {
+          "package_name": "com.example.elok_lagi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "364396026098-bs14rfligbmrqi2ef7nv4g8h37sp5mou.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdv0IA7Nr5FIDIvwnrcZNcWI0JtXfaiMA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "364396026098-bs14rfligbmrqi2ef7nv4g8h37sp5mou.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:364396026098:android:3691492f19125bdc29d86b",
+        "android_client_info": {
+          "package_name": "com.example.elok_lagi_restaurant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "364396026098-bs14rfligbmrqi2ef7nv4g8h37sp5mou.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdv0IA7Nr5FIDIvwnrcZNcWI0JtXfaiMA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "364396026098-bs14rfligbmrqi2ef7nv4g8h37sp5mou.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
