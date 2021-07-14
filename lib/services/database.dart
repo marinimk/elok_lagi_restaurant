@@ -38,6 +38,10 @@ class DatabaseService {
     return restaurantCollection.snapshots()
     .map(_restaurantListFromSS);
   }
+  // Stream<Restaurant> get restaurant {
+  //   return restaurantCollection.snapshots()
+  //   .map(_restaurantListFromSS);
+  // }
 
   void getRestaurant() async {
     final restaurant = await restaurantCollection.get();
