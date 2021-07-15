@@ -1,7 +1,10 @@
-import 'package:elok_lagi_restaurant/view/screen/faqList.dart';
-import 'package:elok_lagi_restaurant/view/screen/history.dart';
-import 'package:elok_lagi_restaurant/view/screen/menu.dart';
-import 'package:elok_lagi_restaurant/view/screen/order.dart';
+import 'package:elok_lagi_restaurant/view/widgets/elrAppBar.dart';
+import 'package:elok_lagi_restaurant/view/screen/faq/faq.dart';
+import 'package:elok_lagi_restaurant/view/screen/faq/faqList.dart';
+import 'package:elok_lagi_restaurant/view/screen/order/history.dart';
+import 'package:elok_lagi_restaurant/view/screen/menu/menu.dart';
+import 'package:elok_lagi_restaurant/view/screen/order/order.dart';
+import 'package:elok_lagi_restaurant/view/widgets/elrDrawer.dart';
 import 'package:flutter/material.dart';
 
 class Startup extends StatefulWidget {
@@ -10,155 +13,12 @@ class Startup extends StatefulWidget {
 }
 
 class _StartupState extends State<Startup> {
-  Widget buildOrder() {
-    return Container(
-      padding: EdgeInsets.fromLTRB(30, 30, 30, 15),
-      //symmetric(horizontal: 30, vertical: 30),
-      //width: double.infinity,
-      // color: Colors.black,
-      child: ElevatedButton(
-        child: Text(
-          'ORDER',
-          style: TextStyle(
-            color: Colors.black87,
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        style: ElevatedButton.styleFrom(
-          elevation: 5.0,
-          primary: Colors.white,
-          minimumSize: Size(200, 70),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-        ),
-        onPressed: () {
-          print('ORDER Pressed');
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Order()),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget buildHistory() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-      //symmetric(horizontal: 30, vertical: 30),
-      // width: double.infinity,
-      // color: Colors.black,
-      child: ElevatedButton(
-        child: Text(
-          'HISTORY',
-          style: TextStyle(
-            color: Colors.black87,
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        style: ElevatedButton.styleFrom(
-          elevation: 5.0,
-          primary: Colors.white,
-          minimumSize: Size(200, 70),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-        ),
-        onPressed: () {
-          print('HISTORY Pressed');
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => History()),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget buildMenu() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-      //symmetric(horizontal: 30, vertical: 30),
-      // width: double.infinity,
-      // color: Colors.black,
-      child: ElevatedButton(
-        child: Text(
-          'MENU',
-          style: TextStyle(
-            color: Colors.black87,
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        style: ElevatedButton.styleFrom(
-          elevation: 5.0,
-          primary: Colors.white,
-          minimumSize: Size(200, 70),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-        ),
-        onPressed: () {
-          print('MENU Pressed');
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Menu()),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget buildFAQ() {
-    return Container(
-      padding: EdgeInsets.fromLTRB(30, 15, 30, 30),
-      //symmetric(horizontal: 30, vertical: 30),
-      // width: double.infinity,
-      // color: Colors.black,
-      child: ElevatedButton(
-        child: Text(
-          'FAQ',
-          style: TextStyle(
-            color: Colors.black87,
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        style: ElevatedButton.styleFrom(
-          elevation: 5.0,
-          primary: Colors.white,
-          minimumSize: Size(200, 70),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-        ),
-        onPressed: () {
-          print('FAQ Pressed');
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => FAQList()),
-          );
-        },
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text('MERCHANT\'S APP'),
-        actions: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: buildElevatedButton(),
-          ),
-        ],
-      ),
+      // appBar: ElrAppBar('EL MERCHANT\'S APP', false),
+      appBar: ElrAppBar('does it work', false),
+      // drawer: ElrDrawer(),
       body: Container(
         color: Colors.pink,
         height: double.infinity,
@@ -169,13 +29,47 @@ class _StartupState extends State<Startup> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              buildOrder(),
-              buildHistory(),
-              buildMenu(),
-              buildFAQ(),
+              startUpCard('Order', Order()),
+              startUpCard('History', History()),
+              startUpCard('Menu', Menu()),
+              startUpCard('FAQ', FAQ()),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget startUpCard(String title, Widget page) {
+    return Container(
+      padding: EdgeInsets.fromLTRB(30, 30, 30, 15),
+      //symmetric(horizontal: 30, vertical: 30),
+      //width: double.infinity,
+      // color: Colors.black,
+      child: ElevatedButton(
+        child: Text(
+          title,
+          style: TextStyle(
+            color: Colors.black87,
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        style: ElevatedButton.styleFrom(
+          elevation: 5.0,
+          primary: Colors.white,
+          minimumSize: Size(200, 70),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+        ),
+        onPressed: () {
+          // print('ORDER Pressed');
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => page),
+          );
+        },
       ),
     );
   }

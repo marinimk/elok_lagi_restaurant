@@ -4,6 +4,7 @@ class Restaurant {
   final String password;
   final String location;
   final String phoneNum;
+  final bool status;
 
-  Restaurant({this.name, this.email, this.password, this.location, this.phoneNum});
+  Restaurant({this.name, this.email, this.password, this.location, this.phoneNum, this.status});
 }

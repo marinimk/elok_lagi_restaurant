@@ -50,7 +50,9 @@ class AuthService {
           email: email, password: password);
       User restaurant = result.user;
       await DatabaseService(uid: restaurant.uid).updateRestaurantData(
-          'name', 'email', 'password', 'location', 'phoneNum');
+          'name', 'email', 'password', 'location', 'phoneNum', false);
+      await DatabaseService(uid: restaurant.uid)
+          .updateFoodData('description', 'marini', 0.0, 0.0, 0);
       return _userFromFirebaseUser(restaurant);
     } catch (error) {
       print(error.toString());
