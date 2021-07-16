@@ -1,11 +1,7 @@
-// import 'package:elok_lagi_restaurant/master.dart';
-// import 'package:elok_lagi_restaurant/view/screens/profile.dart';
 import 'package:elok_lagi_restaurant/services/auth.dart';
 import 'package:elok_lagi_restaurant/view/widgets/loading.dart';
 import 'package:flutter/material.dart';
-
-// import 'package:flutter_icons/flutter_icons.dart';
-// import 'package:login_singup/config/palette.dart';
+import 'package:bordered_text/bordered_text.dart';
 
 class SignInUp extends StatefulWidget {
   @override
@@ -13,7 +9,7 @@ class SignInUp extends StatefulWidget {
 }
 
 class _SignInUpState extends State<SignInUp> {
-  bool isSignupScreen = true;
+  bool isSignupScreen = false;
   bool isRememberMe = false;
 
   String username = '';
@@ -42,49 +38,31 @@ class _SignInUpState extends State<SignInUp> {
                     height: 300,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage("assets/images/magik.png"),
-                          fit: BoxFit.fill),
+                          image: AssetImage(
+                              "assets/images/elok_lagi_transparent.png"),
+                          fit: BoxFit.cover),
                     ),
                     child: Container(
                       padding: EdgeInsets.only(top: 90, left: 20),
-                      color: Color(0xFF3b5999).withOpacity(.85),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          RichText(
-                            text: TextSpan(
-                              text: "Welcome to",
-                              style: TextStyle(
-                                fontSize: 25,
-                                letterSpacing: 2,
-                                color: Colors.yellow[700],
-                              ),
-                              children: [
-                                TextSpan(
-                                  text: isSignupScreen ? " Rizona," : " Back,",
-                                  style: TextStyle(
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.yellow[700],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            isSignupScreen
-                                ? "Signup to Continue"
-                                : "Signin to Continue",
-                            style: TextStyle(
-                              letterSpacing: 1,
-                              color: Colors.white,
-                            ),
-                          )
-                        ],
-                      ),
+                      color: Color(0xff76a973).withOpacity(.5),
+                      // child: Column(
+                      //   crossAxisAlignment: CrossAxisAlignment.start,
+                      //   children: [
+                      //     BorderedText(
+                      //       strokeColor: Colors.grey[800],
+                      //       strokeWidth: 5,
+                      //       child: Text(
+                      //         'Welcome to Elok Lagi',
+                      //         style: TextStyle(
+                      //           fontSize: 25,
+                      //           fontWeight: FontWeight.bold,
+                      //           letterSpacing: 2,
+                      //           color: Colors.yellow[700],
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
                     ),
                   ),
                 ),
@@ -94,11 +72,11 @@ class _SignInUpState extends State<SignInUp> {
                 AnimatedPositioned(
                   duration: Duration(milliseconds: 700),
                   curve: Curves.easeInOutBack,
-                  top: isSignupScreen ? 200 : 230,
+                  top: isSignupScreen ? 220 : 230,
                   child: AnimatedContainer(
                     duration: Duration(milliseconds: 700),
                     curve: Curves.easeInOutBack,
-                    height: isSignupScreen ? 330 : 250,
+                    height: isSignupScreen ? 280 : 250,
                     padding: EdgeInsets.all(20),
                     width: MediaQuery.of(context).size.width - 40,
                     margin: EdgeInsets.symmetric(horizontal: 20),
@@ -120,11 +98,7 @@ class _SignInUpState extends State<SignInUp> {
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  setState(
-                                    () {
-                                      isSignupScreen = false;
-                                    },
-                                  );
+                                  setState(() => isSignupScreen = false);
                                 },
                                 child: Column(
                                   children: [
@@ -149,11 +123,7 @@ class _SignInUpState extends State<SignInUp> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  setState(
-                                    () {
-                                      isSignupScreen = true;
-                                    },
-                                  );
+                                  setState(() => isSignupScreen = true);
                                 },
                                 child: Column(
                                   children: [
@@ -210,11 +180,7 @@ class _SignInUpState extends State<SignInUp> {
                       value: isRememberMe,
                       activeColor: Color(0XFF9BB3C0),
                       onChanged: (value) {
-                        setState(
-                          () {
-                            isRememberMe = !isRememberMe;
-                          },
-                        );
+                        setState(() => isRememberMe = !isRememberMe);
                       },
                     ),
                     Text(
@@ -251,7 +217,6 @@ class _SignInUpState extends State<SignInUp> {
         key: _formKey,
         child: Column(
           children: [
-            buildTextField(Icons.person, "Username", false, false),
             buildTextField(Icons.email, "Email", false, true),
             buildTextField(Icons.lock, "Password", true, false),
             Container(
@@ -287,7 +252,7 @@ class _SignInUpState extends State<SignInUp> {
     return AnimatedPositioned(
       duration: Duration(milliseconds: 700),
       curve: Curves.easeInOutBack,
-      top: isSignupScreen ? 485 : 430,
+      top: isSignupScreen ? 450 : 430,
       right: 0,
       left: 0,
       child: Center(
@@ -312,9 +277,7 @@ class _SignInUpState extends State<SignInUp> {
                   onTap: () async {
                     if (isSignupScreen) {
                       if (_formKey.currentState.validate()) {
-                        setState(() {
-                          loading = true;
-                        });
+                        setState(() => loading = true);
                         dynamic result = await _auth
                             .registerWithEmailAndPassword(email, password);
                         if (result == null) {
@@ -326,9 +289,7 @@ class _SignInUpState extends State<SignInUp> {
                       }
                     } else {
                       if (_formKey.currentState.validate()) {
-                        setState(() {
-                          loading = true;
-                        });
+                        setState(() => loading = true);
                         dynamic result = await _auth.signInWithEmailAndPassword(
                             email, password);
                         if (result == null) {
@@ -379,8 +340,6 @@ class _SignInUpState extends State<SignInUp> {
               return 'isi email';
             } else if (isPassword) {
               textError = 'isi password';
-            } else {
-              textError = 'isi username';
             }
             return textError;
           } else {
@@ -389,17 +348,9 @@ class _SignInUpState extends State<SignInUp> {
         },
         onChanged: (val) {
           if (isEmail) {
-            setState(() {
-              email = val;
-            });
+            setState(() => email = val);
           } else if (isPassword) {
-            setState(() {
-              password = val;
-            });
-          } else {
-            setState(() {
-              username = val;
-            });
+            setState(() => password = val);
           }
         },
         obscureText: isPassword,

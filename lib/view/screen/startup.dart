@@ -1,10 +1,9 @@
+import 'package:elok_lagi_restaurant/view/screen/profile/profile.dart';
 import 'package:elok_lagi_restaurant/view/widgets/elrAppBar.dart';
 import 'package:elok_lagi_restaurant/view/screen/faq/faq.dart';
-import 'package:elok_lagi_restaurant/view/screen/faq/faqList.dart';
 import 'package:elok_lagi_restaurant/view/screen/order/history.dart';
 import 'package:elok_lagi_restaurant/view/screen/menu/menu.dart';
 import 'package:elok_lagi_restaurant/view/screen/order/order.dart';
-import 'package:elok_lagi_restaurant/view/widgets/elrDrawer.dart';
 import 'package:flutter/material.dart';
 
 class Startup extends StatefulWidget {
@@ -17,22 +16,38 @@ class _StartupState extends State<Startup> {
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: ElrAppBar('EL MERCHANT\'S APP', false),
-      appBar: ElrAppBar('does it work', false),
+      appBar: ElrAppBar('EL MERCHANT\'S APP', false),
       // drawer: ElrDrawer(),
       body: Container(
-        color: Colors.pink,
+        color: Color(0xffFDF7FA),
         height: double.infinity,
         width: double.infinity,
         child: Center(
           child: Column(
             //mainAxisSize: ,
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            // crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              startUpCard('Order', Order()),
-              startUpCard('History', History()),
-              startUpCard('Menu', Menu()),
-              startUpCard('FAQ', FAQ()),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  startUpCard(Icons.person, 'Profile', Profile()),
+                  startUpCard(Icons.list, 'Order', Order()),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  startUpCard(Icons.history, 'History', History()),
+                  startUpCard(Icons.fastfood, 'Menu', Menu()),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  startUpCard(Icons.chat, 'FAQ', FAQ()),
+                ],
+              ),
             ],
           ),
         ),
@@ -40,31 +55,38 @@ class _StartupState extends State<Startup> {
     );
   }
 
-  Widget startUpCard(String title, Widget page) {
+  Widget startUpCard(IconData icon, String title, Widget page) {
     return Container(
-      padding: EdgeInsets.fromLTRB(30, 30, 30, 15),
-      //symmetric(horizontal: 30, vertical: 30),
-      //width: double.infinity,
-      // color: Colors.black,
+      // color:Colors.pink,
+      padding: EdgeInsets.all(15),
       child: ElevatedButton(
-        child: Text(
-          title,
-          style: TextStyle(
-            color: Colors.black87,
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-          ),
+        child: Column(
+          children: [
+            Icon(
+              icon,
+              size: 50,
+              color: Color(0xffF3F7F2),
+            ),
+            SizedBox(height: 5),
+            Text(
+              title,
+              style: TextStyle(
+                color: Color(0xffF3F7F2),
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
         ),
         style: ElevatedButton.styleFrom(
-          elevation: 5.0,
-          primary: Colors.white,
-          minimumSize: Size(200, 70),
+          // elevation: 5.0,
+          primary: Color(0xff2F4C2F),
+          minimumSize: Size(150, 150),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
         ),
         onPressed: () {
-          // print('ORDER Pressed');
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => page),

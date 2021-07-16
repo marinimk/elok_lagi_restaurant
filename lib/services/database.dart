@@ -17,18 +17,20 @@ class DatabaseService {
   Future updateRestaurantData(String name, String email, String password,
       String location, String phoneNum, bool status) async {
     return await restaurantCollection.doc(uid).set({
+      'uid': uid,
       'name': name,
       'email': email,
       'password': password,
       'location': location,
       'phoneNum': phoneNum,
-      'status' : status,
+      'status': status,
     });
   }
 
   Future updateFoodData(String description, String name, double oriPrice,
       double salePrice, int pax) async {
-    return await foodCollection.doc().set({
+    return await restaurantCollection.doc(uid).collection('food').doc().set({
+      'ruid': uid,
       'name': name,
       'description': description,
       'ori price': oriPrice,
@@ -45,9 +47,21 @@ class DatabaseService {
         password: doc.data()['password'] ?? '',
         location: doc.data()['location'] ?? '',
         phoneNum: doc.data()['phoneNum'] ?? '',
-        status: doc.data()['status'] ?? '',
+        status: doc.data()['status'] ?? false,
       );
     }).toList();
+  }
+
+  RestaurantData _restaurantDataFromSS(DocumentSnapshot snapshot) {
+    return RestaurantData(
+      uid: uid,
+      name: snapshot.data()['name'] ?? '',
+      email: snapshot.data()['email'] ?? '',
+      password: snapshot.data()['password'] ?? '',
+      location: snapshot.data()['location'] ?? '',
+      phoneNum: snapshot.data()['phoneNum'] ?? '',
+      status: snapshot.data()['status'] ?? false,
+    );
   }
 
   List<Food> _foodListFromSS(QuerySnapshot snapshot) {
@@ -55,8 +69,8 @@ class DatabaseService {
       return Food(
         name: doc.data()['name'] ?? '',
         description: doc.data()['description'] ?? '',
-        oriPrice: doc.data()['ori price'] ?? 0.0,
-        salePrice: doc.data()['sale price'] ?? 0.0,
+        oriPrice: doc.data()['oriPrice'] ?? 0.0,
+        salePrice: doc.data()['salePrice'] ?? 0.0,
         pax: doc.data()['pax'] ?? 0,
       );
     }).toList();
@@ -66,7 +80,15 @@ class DatabaseService {
     return restaurantCollection.snapshots().map(_restaurantListFromSS);
   }
 
+  Stream<RestaurantData> get restaurantData {
+    return restaurantCollection.doc(uid).snapshots().map(_restaurantDataFromSS);
+  }
+
   Stream<List<Food>> get food {
-    return foodCollection.snapshots().map(_foodListFromSS);
+    return restaurantCollection
+        .doc(uid)
+        .collection('food')
+        .snapshots()
+        .map(_foodListFromSS);
   }
 }
