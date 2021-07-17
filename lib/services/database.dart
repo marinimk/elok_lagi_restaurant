@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elok_lagi_restaurant/models/food.dart';
 import 'package:elok_lagi_restaurant/models/restaurant.dart';
+import 'package:flutter/cupertino.dart';
 
 class DatabaseService {
   final String uid;
-  DatabaseService({this.uid});
+  DatabaseService({@required this.uid});
 
   // collection reference
   final CollectionReference restaurantCollection =
@@ -14,13 +15,13 @@ class DatabaseService {
       .doc()
       .collection('food');
 
-  Future updateRestaurantData(String name, String email, String password,
-      String location, String phoneNum, bool status) async {
+  Future updateRestaurantData(
+      String name, String location, String phoneNum, bool status) async {
     return await restaurantCollection.doc(uid).set({
       'uid': uid,
       'name': name,
-      'email': email,
-      'password': password,
+      // 'email': email,
+      // 'password': password,
       'location': location,
       'phoneNum': phoneNum,
       'status': status,
@@ -33,8 +34,8 @@ class DatabaseService {
       'ruid': uid,
       'name': name,
       'description': description,
-      'ori price': oriPrice,
-      'sale price': salePrice,
+      'oriPrice': oriPrice,
+      'salePrice': salePrice,
       'pax': pax,
     });
   }
@@ -43,8 +44,8 @@ class DatabaseService {
     return snapshot.docs.map((doc) {
       return Restaurant(
         name: doc.data()['name'] ?? '',
-        email: doc.data()['email'] ?? '',
-        password: doc.data()['password'] ?? '',
+        // email: doc.data()['email'] ?? '',
+        // password: doc.data()['password'] ?? '',
         location: doc.data()['location'] ?? '',
         phoneNum: doc.data()['phoneNum'] ?? '',
         status: doc.data()['status'] ?? false,
@@ -56,8 +57,8 @@ class DatabaseService {
     return RestaurantData(
       uid: uid,
       name: snapshot.data()['name'] ?? '',
-      email: snapshot.data()['email'] ?? '',
-      password: snapshot.data()['password'] ?? '',
+      // email: snapshot.data()['email'] ?? '',
+      // password: snapshot.data()['password'] ?? '',
       location: snapshot.data()['location'] ?? '',
       phoneNum: snapshot.data()['phoneNum'] ?? '',
       status: snapshot.data()['status'] ?? false,
