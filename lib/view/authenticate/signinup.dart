@@ -1,4 +1,4 @@
-import 'package:elok_lagi_restaurant/services/auth.dart';
+import 'package:elok_lagi_restaurant/controller/auth.dart';
 import 'package:elok_lagi_restaurant/view/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:bordered_text/bordered_text.dart';
