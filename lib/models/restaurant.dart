@@ -2,6 +2,7 @@ class Restaurant {
   final String name;
   final String email;
   final String password;
+  final String category;
   final String location;
   final String phoneNum;
   final bool status;
@@ -10,6 +11,7 @@ class Restaurant {
       {this.name,
       this.email,
       this.password,
+      this.category,
       this.location,
       this.phoneNum,
       this.status});
@@ -20,6 +22,7 @@ class RestaurantData {
   final String name;
   final String email;
   final String password;
+  final String category;
   final String location;
   final String phoneNum;
   final bool status;
@@ -29,6 +32,7 @@ class RestaurantData {
       this.name,
       this.email,
       this.password,
+      this.category,
       this.location,
       this.phoneNum,
       this.status});
