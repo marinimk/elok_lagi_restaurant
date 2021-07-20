@@ -24,142 +24,140 @@ class _SignInUpState extends State<SignInUp> {
 
   @override
   Widget build(BuildContext context) {
-    return loading
-        ? Loading()
-        : Scaffold(
-            backgroundColor: Color(0xFFECF3F9),
-            body: Stack(
-              children: [
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  left: 0,
-                  child: Container(
-                    height: 300,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage(
-                              "assets/images/elok_lagi_transparent.png"),
-                          fit: BoxFit.cover),
-                    ),
-                    child: Container(
-                      padding: EdgeInsets.only(top: 90, left: 20),
-                      color: Color(0xff76a973).withOpacity(.5),
-                      // child: Column(
-                      //   crossAxisAlignment: CrossAxisAlignment.start,
-                      //   children: [
-                      //     BorderedText(
-                      //       strokeColor: Colors.grey[800],
-                      //       strokeWidth: 5,
-                      //       child: Text(
-                      //         'Welcome to Elok Lagi',
-                      //         style: TextStyle(
-                      //           fontSize: 25,
-                      //           fontWeight: FontWeight.bold,
-                      //           letterSpacing: 2,
-                      //           color: Colors.yellow[700],
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
-                    ),
-                  ),
-                ),
-                // Trick to add the shadow for the submit button
-                buildBottomHalfContainer(true),
-                //Main Contianer for Login and Signup
-                AnimatedPositioned(
-                  duration: Duration(milliseconds: 700),
-                  curve: Curves.easeInOutBack,
-                  top: isSignupScreen ? 220 : 230,
-                  child: AnimatedContainer(
-                    duration: Duration(milliseconds: 700),
-                    curve: Curves.easeInOutBack,
-                    height: isSignupScreen ? 280 : 250,
-                    padding: EdgeInsets.all(20),
-                    width: MediaQuery.of(context).size.width - 40,
-                    margin: EdgeInsets.symmetric(horizontal: 20),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black.withOpacity(0.3),
-                            blurRadius: 15,
-                            spreadRadius: 5),
-                      ],
-                    ),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+    return Scaffold(
+      backgroundColor: Color(0xFFECF3F9),
+      body: Stack(
+        children: [
+          Positioned(
+            top: 0,
+            right: 0,
+            left: 0,
+            child: Container(
+              height: 300,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image:
+                        AssetImage("assets/images/elok_lagi_transparent.png"),
+                    fit: BoxFit.cover),
+              ),
+              child: Container(
+                padding: EdgeInsets.only(top: 90, left: 20),
+                color: Color(0xff76a973).withOpacity(.5),
+                // child: Column(
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [
+                //     BorderedText(
+                //       strokeColor: Colors.grey[800],
+                //       strokeWidth: 5,
+                //       child: Text(
+                //         'Welcome to Elok Lagi',
+                //         style: TextStyle(
+                //           fontSize: 25,
+                //           fontWeight: FontWeight.bold,
+                //           letterSpacing: 2,
+                //           color: Colors.yellow[700],
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+              ),
+            ),
+          ),
+          // Trick to add the shadow for the submit button
+          buildBottomHalfContainer(true),
+          //Main Contianer for Login and Signup
+          AnimatedPositioned(
+            duration: Duration(milliseconds: 700),
+            curve: Curves.easeInOutBack,
+            top: isSignupScreen ? 220 : 230,
+            child: AnimatedContainer(
+              duration: Duration(milliseconds: 700),
+              curve: Curves.easeInOutBack,
+              height: isSignupScreen ? 280 : 250,
+              padding: EdgeInsets.all(20),
+              width: MediaQuery.of(context).size.width - 40,
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black.withOpacity(0.3),
+                      blurRadius: 15,
+                      spreadRadius: 5),
+                ],
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() => isSignupScreen = false);
+                          },
+                          child: Column(
                             children: [
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() => isSignupScreen = false);
-                                },
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      "LOGIN",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: !isSignupScreen
-                                              ? Color(0xFF09126C)
-                                              : Color(0XFFA7BCC7)),
-                                    ),
-                                    if (!isSignupScreen)
-                                      Container(
-                                        margin: EdgeInsets.only(top: 3),
-                                        height: 2,
-                                        width: 55,
-                                        color: Colors.orange,
-                                      )
-                                  ],
-                                ),
+                              Text(
+                                "LOGIN",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: !isSignupScreen
+                                        ? Color(0xFF09126C)
+                                        : Color(0XFFA7BCC7)),
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() => isSignupScreen = true);
-                                },
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      "SIGNUP",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: isSignupScreen
-                                              ? Color(0xFF09126C)
-                                              : Color(0XFFA7BCC7)),
-                                    ),
-                                    if (isSignupScreen)
-                                      Container(
-                                        margin: EdgeInsets.only(top: 3),
-                                        height: 2,
-                                        width: 55,
-                                        color: Colors.orange,
-                                      ),
-                                  ],
-                                ),
-                              )
+                              if (!isSignupScreen)
+                                Container(
+                                  margin: EdgeInsets.only(top: 3),
+                                  height: 2,
+                                  width: 55,
+                                  color: Colors.orange,
+                                )
                             ],
                           ),
-                          if (isSignupScreen) buildSignupSection(),
-                          if (!isSignupScreen) buildSigninSection()
-                        ],
-                      ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() => isSignupScreen = true);
+                          },
+                          child: Column(
+                            children: [
+                              Text(
+                                "SIGNUP",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: isSignupScreen
+                                        ? Color(0xFF09126C)
+                                        : Color(0XFFA7BCC7)),
+                              ),
+                              if (isSignupScreen)
+                                Container(
+                                  margin: EdgeInsets.only(top: 3),
+                                  height: 2,
+                                  width: 55,
+                                  color: Colors.orange,
+                                ),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
-                  ),
+                    if (isSignupScreen) buildSignupSection(),
+                    if (!isSignupScreen) buildSigninSection()
+                  ],
                 ),
-                // Trick to add the submit button
-                buildBottomHalfContainer(false),
-              ],
+              ),
             ),
-          );
+          ),
+          // Trick to add the submit button
+          buildBottomHalfContainer(false),
+        ],
+      ),
+    );
   }
 
   Container buildSigninSection() {
