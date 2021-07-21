@@ -87,7 +87,7 @@ class _StartupState extends State<Startup> {
           ),
         ),
         onPressed: () {
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => page),
           );

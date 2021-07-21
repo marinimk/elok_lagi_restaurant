@@ -64,9 +64,7 @@ class _SignInUpState extends State<SignInUp> {
               ),
             ),
           ),
-          // Trick to add the shadow for the submit button
           buildBottomHalfContainer(true),
-          //Main Contianer for Login and Signup
           AnimatedPositioned(
             duration: Duration(milliseconds: 700),
             curve: Curves.easeInOutBack,
@@ -153,11 +151,11 @@ class _SignInUpState extends State<SignInUp> {
               ),
             ),
           ),
-          // Trick to add the submit button
           buildBottomHalfContainer(false),
         ],
       ),
     );
+    // : Loading();
   }
 
   Container buildSigninSection() {
