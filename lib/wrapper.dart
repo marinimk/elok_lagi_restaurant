@@ -20,10 +20,7 @@ class Wrapper extends StatelessWidget {
     if (user == null) {
       return Authenticate();
     } else {
-      // return Master();
       return Startup();
-      // return ElrDrawer();
-      // return Profile();
     }
   }
 }

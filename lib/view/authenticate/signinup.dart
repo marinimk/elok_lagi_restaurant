@@ -1,4 +1,5 @@
 import 'package:elok_lagi_restaurant/controller/auth.dart';
+import 'package:elok_lagi_restaurant/view/screen/startup.dart';
 import 'package:elok_lagi_restaurant/view/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:bordered_text/bordered_text.dart';
@@ -288,6 +289,10 @@ class _SignInUpState extends State<SignInUp> {
                         setState(() => loading = true);
                         dynamic result = await _auth.signInWithEmailAndPassword(
                             email, password);
+                        // Navigator.pushReplacement(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => Startup()),
+                        // );
                         if (result == null) {
                           setState(() {
                             loading = false;

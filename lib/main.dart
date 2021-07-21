@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamProvider<Users>.value(
       initialData: Users(),
-      value: AuthService().restaurant,
+      value: AuthService().user,
       child: MaterialApp(
         theme: ThemeData(
           canvasColor: Color(0xffF3F7F2),
