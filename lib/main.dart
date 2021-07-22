@@ -1,14 +1,15 @@
 import 'package:elok_lagi_restaurant/models/users.dart';
 import 'package:flutter/material.dart';
-import 'package:elok_lagi_restaurant/models/restaurant.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:elok_lagi_restaurant/controller/auth.dart';
 import 'package:elok_lagi_restaurant/wrapper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   runApp(MyApp());
 }
 
