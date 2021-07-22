@@ -6,6 +6,7 @@ class Restaurant {
   final String location;
   final String phoneNum;
   final bool status;
+  final String imageURL;
 
   Restaurant(
       {this.name,
@@ -14,7 +15,8 @@ class Restaurant {
       this.category,
       this.location,
       this.phoneNum,
-      this.status});
+      this.status,
+      this.imageURL});
 }
 
 class RestaurantData {
@@ -26,6 +28,7 @@ class RestaurantData {
   final String location;
   final String phoneNum;
   final bool status;
+  final String imageURL;
 
   RestaurantData(
       {this.uid,
@@ -35,5 +38,6 @@ class RestaurantData {
       this.category,
       this.location,
       this.phoneNum,
-      this.status});
+      this.status,
+      this.imageURL});
 }

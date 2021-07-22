@@ -48,15 +48,15 @@ ButtonStyle elevatedButtonStyle() {
   return ButtonStyle(
     minimumSize: MaterialStateProperty.all(Size(100, 40)),
     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-      RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18.0),
-
-        // side: BorderSide(
-        //     // width: 2,
-        //     // color: Colors.red,
-        //     ),
-      ),
+      RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
     ),
+  );
+}
+
+ButtonStyle circularElevatedButton() {
+  return ElevatedButton.styleFrom(
+    shape: CircleBorder(),
+    padding: EdgeInsets.all(10),
   );
 }
 
@@ -65,17 +65,17 @@ Row buttonTextRow(IconData icon, String text) {
     children: [
       Icon(icon),
       SizedBox(width: 5),
-      Text(
-        text,
-        style: TextStyle(
-          fontSize: 16,
-        ),
-      ),
+      Text(text, style: TextStyle(fontSize: 16)),
     ],
   );
 }
 
 extension CapExtension on String {
-  String get inCaps => this.length > 0 ?'${this[0].toUpperCase()}${this.substring(1)}':'';
-  String get capitalizeFirstofEach => this.replaceAll(RegExp(' +'), ' ').split(" ").map((str) => str.inCaps).join(" ");
+  String get inCaps =>
+      this.length > 0 ? '${this[0].toUpperCase()}${this.substring(1)}' : '';
+  String get capitalizeFirstofEach => this
+      .replaceAll(RegExp(' +'), ' ')
+      .split(" ")
+      .map((str) => str.inCaps)
+      .join(" ");
 }
