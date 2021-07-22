@@ -1,6 +1,6 @@
+import 'package:elok_lagi_restaurant/view/screen/faq/faq_list.dart';
 import 'package:elok_lagi_restaurant/view/screen/profile/profile.dart';
 import 'package:elok_lagi_restaurant/view/widgets/elrAppBar.dart';
-import 'package:elok_lagi_restaurant/view/screen/faq/faq.dart';
 import 'package:elok_lagi_restaurant/view/screen/order/history.dart';
 import 'package:elok_lagi_restaurant/view/screen/menu/menu.dart';
 import 'package:elok_lagi_restaurant/view/screen/order/order.dart';
@@ -15,18 +15,14 @@ class _StartupState extends State<Startup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: ElrAppBar('EL MERCHANT\'S APP', false),
       appBar: ElrAppBar('EL MERCHANT\'S APP', false),
-      // drawer: ElrDrawer(),
       body: Container(
         color: Color(0xffFDF7FA),
         height: double.infinity,
         width: double.infinity,
         child: Center(
           child: Column(
-            //mainAxisSize: ,
             mainAxisAlignment: MainAxisAlignment.center,
-            // crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -45,7 +41,7 @@ class _StartupState extends State<Startup> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  startUpCard(Icons.chat, 'FAQ', FAQ()),
+                  startUpCard(Icons.chat, 'FAQ', FAQList()),
                 ],
               ),
             ],
