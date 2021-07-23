@@ -1,8 +1,7 @@
 import 'package:elok_lagi_restaurant/controller/auth.dart';
 import 'package:elok_lagi_restaurant/view/screen/startup.dart';
-import 'package:elok_lagi_restaurant/view/widgets/loading.dart';
+import 'package:elok_lagi_restaurant/view/widgets/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:bordered_text/bordered_text.dart';
 
 class SignInUp extends StatefulWidget {
   @override
@@ -13,9 +12,11 @@ class _SignInUpState extends State<SignInUp> {
   bool isSignupScreen = false;
   bool isRememberMe = false;
 
-  String username = '';
+  String name = '';
+  String phoneNum = '';
   String email = '';
   String password = '';
+  String cPassword = '';
   String textError = '';
   String error = '';
 
@@ -156,7 +157,6 @@ class _SignInUpState extends State<SignInUp> {
         ],
       ),
     );
-    // : Loading();
   }
 
   Container buildSigninSection() {
@@ -214,8 +214,11 @@ class _SignInUpState extends State<SignInUp> {
         key: _formKey,
         child: Column(
           children: [
+            // buildTextField(Icons.house_siding, "Restaurant Name", false, false),
+            // buildTextField(Icons.phone_android, "Phone Number", false, false),
             buildTextField(Icons.email, "Email", false, true),
             buildTextField(Icons.lock, "Password", true, false),
+            // buildTextField(Icons.lock, "Confirm Password", true, false),
             Container(
               width: 200,
               margin: EdgeInsets.only(top: 20),
@@ -228,8 +231,7 @@ class _SignInUpState extends State<SignInUp> {
                   ),
                   children: [
                     TextSpan(
-                      //recognizer: ,
-                      text: "term & conditions",
+                      text: "terms & conditions",
                       style: TextStyle(color: Colors.orange),
                     ),
                   ],
@@ -335,6 +337,13 @@ class _SignInUpState extends State<SignInUp> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: TextFormField(
+        onChanged: (val) {
+           if (isEmail) {
+            setState(() => email = val);
+          } else if (isPassword) {
+            setState(() => password = val);
+          }
+        },
         validator: (val) {
           if (val.isEmpty) {
             if (isEmail) {
@@ -347,43 +356,10 @@ class _SignInUpState extends State<SignInUp> {
             return null;
           }
         },
-        onChanged: (val) {
-          if (isEmail) {
-            setState(() => email = val);
-          } else if (isPassword) {
-            setState(() => password = val);
-          }
-        },
+        
         obscureText: isPassword,
         keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
-        decoration: InputDecoration(
-          prefixIcon: Icon(
-            icon,
-            color: Color(0xFFB6C7D1),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Color(0XFFA7BCC7),
-            ),
-            borderRadius: BorderRadius.all(
-              Radius.circular(35.0),
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Color(0XFFA7BCC7),
-            ),
-            borderRadius: BorderRadius.all(
-              Radius.circular(35.0),
-            ),
-          ),
-          contentPadding: EdgeInsets.all(10),
-          hintText: hintText,
-          hintStyle: TextStyle(
-            fontSize: 14,
-            color: Color(0XFFA7BCC7),
-          ),
-        ),
+        decoration: textInputDecoration(icon, hintText)
       ),
     );
   }
