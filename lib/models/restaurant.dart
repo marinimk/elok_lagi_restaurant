@@ -1,7 +1,5 @@
 class Restaurant {
   final String name;
-  final String email;
-  final String password;
   final String category;
   final String location;
   final String phoneNum;
@@ -10,8 +8,6 @@ class Restaurant {
 
   Restaurant(
       {this.name,
-      this.email,
-      this.password,
       this.category,
       this.location,
       this.phoneNum,
@@ -22,8 +18,6 @@ class Restaurant {
 class RestaurantData {
   final String uid;
   final String name;
-  final String email;
-  final String password;
   final String category;
   final String location;
   final String phoneNum;
@@ -33,8 +27,6 @@ class RestaurantData {
   RestaurantData(
       {this.uid,
       this.name,
-      this.email,
-      this.password,
       this.category,
       this.location,
       this.phoneNum,

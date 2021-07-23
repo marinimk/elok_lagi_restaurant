@@ -289,10 +289,10 @@ class _SignInUpState extends State<SignInUp> {
                         setState(() => loading = true);
                         dynamic result = await _auth.signInWithEmailAndPassword(
                             email, password);
-                        // Navigator.pushReplacement(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => Startup()),
-                        // );
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => Startup()),
+                        );
                         if (result == null) {
                           setState(() {
                             loading = false;
