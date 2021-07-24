@@ -3,7 +3,7 @@ import 'package:elok_lagi_restaurant/view/screen/profile/profile.dart';
 import 'package:elok_lagi_restaurant/view/widgets/elrAppBar.dart';
 import 'package:elok_lagi_restaurant/view/screen/order/history.dart';
 import 'package:elok_lagi_restaurant/view/screen/menu/menu.dart';
-import 'package:elok_lagi_restaurant/view/screen/order/order.dart';
+import 'package:elok_lagi_restaurant/view/screen/order/order_list.dart';
 import 'package:flutter/material.dart';
 
 class Startup extends StatefulWidget {
@@ -28,7 +28,7 @@ class _StartupState extends State<Startup> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   startUpCard(Icons.person, 'Profile', Profile()),
-                  startUpCard(Icons.list, 'Order', Order()),
+                  startUpCard(Icons.list, 'Order', OrderList()),
                 ],
               ),
               Row(
