@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:elok_lagi_restaurant/view/widgets/profile/restaurant_list.dart';
 import 'package:elok_lagi_restaurant/models/users.dart';
-import 'package:elok_lagi_restaurant/view/widgets/elrDrawer.dart';
+import 'package:elok_lagi_restaurant/view/widgets/elr_drawer.dart';
 
 class Profile extends StatefulWidget {
   @override

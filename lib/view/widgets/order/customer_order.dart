@@ -1,6 +1,7 @@
 import 'package:elok_lagi_restaurant/controller/database.dart';
 import 'package:elok_lagi_restaurant/models/customer.dart';
 import 'package:elok_lagi_restaurant/view/widgets/loading.dart';
+import 'package:elok_lagi_restaurant/view/widgets/constants.dart';
 import 'package:flutter/material.dart';
 
 class CustomerOrder extends StatelessWidget {
@@ -43,7 +44,7 @@ class CustomerOrder extends StatelessWidget {
                 style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
               ),
               Text(
-                info,
+                info.capitalizeFirstofEach,
                 style: TextStyle(fontSize: 18),
               ),
             ],

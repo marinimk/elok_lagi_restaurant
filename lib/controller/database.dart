@@ -3,10 +3,12 @@ import 'package:elok_lagi_restaurant/models/customer.dart';
 import 'package:elok_lagi_restaurant/models/faq.dart';
 import 'package:elok_lagi_restaurant/models/food.dart';
 import 'package:elok_lagi_restaurant/models/fooditem.dart';
+import 'package:elok_lagi_restaurant/models/history.dart';
 import 'package:elok_lagi_restaurant/models/order.dart';
 import 'package:elok_lagi_restaurant/models/restaurant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService {
   String uid;
@@ -83,6 +85,7 @@ class DatabaseService {
       'description': description,
       'oriPrice': oriPrice,
       'salePrice': salePrice,
+      'datetime': DateTime.now(),
       'pax': pax,
       'imageURL': imageURL,
     });
@@ -100,6 +103,7 @@ class DatabaseService {
       'description': description,
       'oriPrice': oriPrice,
       'salePrice': salePrice,
+      'datetime': DateTime.now(),
       'pax': pax,
       'imageURL': imageURL,
     });
@@ -114,12 +118,19 @@ class DatabaseService {
   //returning the list of foods in a restaurant
   List<Food> _foodListFromSS(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
+      Timestamp dtTS = doc.data()['datetime'] as Timestamp;
+      DateTime dtDT = dtTS.toDate();
+      String date =
+          '${dtDT.day.toString().padLeft(2, '0')}/${dtDT.month.toString().padLeft(2, '0')}/${dtDT.year.toString().padLeft(2, '0')}';
+
+      String datetime = '$date ${DateFormat('jm').format(dtDT)}';
       return Food(
         fid: doc.data()['fid'] ?? '',
         name: doc.data()['name'] ?? '',
         description: doc.data()['description'] ?? '',
         oriPrice: doc.data()['oriPrice'] ?? 0.0,
         salePrice: doc.data()['salePrice'] ?? 0.0,
+        datetime: datetime ?? '00/00/0000 00.00',
         pax: doc.data()['pax'] ?? 0,
         imageURL: doc.data()['imageURL'] ?? 0,
       );
@@ -130,18 +141,27 @@ class DatabaseService {
     return restaurantCollection
         .doc(uid)
         .collection('food')
+        .orderBy('datetime', descending: true)
         .snapshots()
         .map(_foodListFromSS);
   }
 
   //returning a single food item int
   Food _foodDataFromSS(DocumentSnapshot snapshot) {
+    Timestamp dtTS = snapshot.data()['datetime'] as Timestamp;
+    DateTime dtDT = dtTS.toDate();
+    String date =
+        '${dtDT.day.toString().padLeft(2, '0')}/${dtDT.month.toString().padLeft(2, '0')}/${dtDT.year.toString().padLeft(2, '0')}';
+
+    String datetime = '$date ${DateFormat('jm').format(dtDT)}';
+
     return Food(
       fid: snapshot.data()['fid'] ?? '',
       name: snapshot.data()['name'] ?? '',
       description: snapshot.data()['description'] ?? '',
       oriPrice: snapshot.data()['oriPrice'] ?? 0.0,
       salePrice: snapshot.data()['salePrice'] ?? 0.0,
+      datetime: datetime ?? '00/00/0000 00.00',
       pax: snapshot.data()['pax'] ?? 0,
       imageURL: snapshot.data()['imageURL'] ?? 0,
     );
@@ -214,9 +234,6 @@ class DatabaseService {
           '${pickUpDT.day.toString().padLeft(2, '0')}/${pickUpDT.month.toString().padLeft(2, '0')}/${pickUpDT.year.toString().padLeft(2, '0')}';
       String orderT = DateFormat('jm').format(orderDT);
       String pickUpT = DateFormat('jm').format(pickUpDT);
-
-      print('date: $date, orderDT: $orderT, pickUpDT: $pickUpT');
-
       return Order(
         oid: doc.data()['oid'] ?? '',
         cuid: doc.data()['cuid'] ?? '',
@@ -273,6 +290,77 @@ class DatabaseService {
         .map(_orderDataFromSS);
   }
 
+  //returning the list of orders in a restaurant
+  List<History> _historyListFromSS(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      Timestamp pickUpTS = doc.data()['pickUpTime'] as Timestamp;
+      DateTime pickUpDT = pickUpTS.toDate();
+
+      Timestamp orderTS = doc.data()['orderTime'] as Timestamp;
+      DateTime orderDT = orderTS.toDate();
+
+      String date =
+          '${pickUpDT.day.toString().padLeft(2, '0')}/${pickUpDT.month.toString().padLeft(2, '0')}/${pickUpDT.year.toString().padLeft(2, '0')}';
+      String orderT = DateFormat('jm').format(orderDT);
+      String pickUpT = DateFormat('jm').format(pickUpDT);
+      return History(
+        hid: doc.data()['hid'] ?? '',
+        oid: doc.data()['oid'] ?? '',
+        cuid: doc.data()['cuid'] ?? '',
+        ruid: doc.data()['ruid'] ?? '',
+        message: doc.data()['message'] ?? '',
+        date: date ?? '00/00/0000',
+        pickUpTime: pickUpT ?? '00:00:00',
+        orderTime: orderT ?? '00:00:00',
+        totalPrice: doc.data()['totalPrice'] ?? 0,
+      );
+    }).toList();
+  }
+
+  Stream<List<History>> get history {
+    return restaurantCollection
+        .doc(uid)
+        .collection('history')
+        .orderBy('pickUpTime', descending: true)
+        .snapshots()
+        .map(_historyListFromSS);
+  }
+
+  //returning a single order
+  History _historyDataFromSS(DocumentSnapshot snapshot) {
+    Timestamp pickUpTS = snapshot.data()['pickUpTime'] as Timestamp;
+    DateTime pickUpDT = pickUpTS.toDate();
+
+    Timestamp orderTS = snapshot.data()['orderTime'] as Timestamp;
+    DateTime orderDT = orderTS.toDate();
+
+    String date =
+        '${pickUpDT.day.toString().padLeft(2, '0')}/${pickUpDT.month.toString().padLeft(2, '0')}/${pickUpDT.year.toString().padLeft(2, '0')}';
+    String orderT = DateFormat('jm').format(orderDT);
+    String pickUpT = DateFormat('jm').format(pickUpDT);
+
+    return History(
+      hid: snapshot.data()['hid'] ?? '',
+      oid: snapshot.data()['oid'] ?? '',
+      cuid: snapshot.data()['cuid'] ?? '',
+      ruid: snapshot.data()['ruid'] ?? '',
+      message: snapshot.data()['message'] ?? '',
+      date: date ?? '00/00/0000',
+      pickUpTime: pickUpT ?? '00:00:00',
+      orderTime: orderT ?? '00:00:00',
+      totalPrice: snapshot.data()['totalPrice'] ?? 0,
+    );
+  }
+
+  Stream<History> get historyData {
+    return restaurantCollection
+        .doc(uid)
+        .collection('history')
+        .doc(fid)
+        .snapshots()
+        .map(_historyDataFromSS);
+  }
+
   //returning the list of fooditems in the order
   List<FoodItem> _foodItemListFromSS(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
@@ -312,5 +400,68 @@ class DatabaseService {
 
   Stream<CustomerData> get customerData {
     return customerCollection.doc(uid).snapshots().map(_customerDataFromSS);
+  }
+
+  //creating an history subcollection, duplicated from order
+  Future createHistory() async {
+    var newHistoryDoc =
+        restaurantCollection.doc(uid).collection('history').doc();
+    var newHistoryFoodItemDoc = newHistoryDoc.collection('fooditem').doc();
+
+    //creating history
+    restaurantCollection.doc(uid).collection('order').get().then((value) {
+      value.docs.forEach((element) {
+        restaurantCollection
+            .doc(uid)
+            .collection('history')
+            .doc(newHistoryDoc.id)
+            .set(element.data());
+      });
+      newHistoryDoc.update({'hid': newHistoryDoc.id});
+    });
+
+    //creating the fooditem in history
+    restaurantCollection
+        .doc(uid)
+        .collection('order')
+        .doc(fid)
+        .collection('fooditem')
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        restaurantCollection
+            .doc(uid)
+            .collection('history')
+            .doc(newHistoryDoc.id)
+            .collection('fooditem')
+            .doc(newHistoryFoodItemDoc.id)
+            .set(element.data());
+      });
+    });
+  }
+
+  //delete order after history was made
+  void deleteOrder() {
+    //delete the fooditems in order
+    Future<QuerySnapshot> foodItemInOrder = restaurantCollection
+        .doc(uid)
+        .collection('order')
+        .doc(fid)
+        .collection('fooditem')
+        .get();
+    foodItemInOrder.then((value) {
+      value.docs.forEach((element) {
+        restaurantCollection
+            .doc(uid)
+            .collection('order')
+            .doc(fid)
+            .collection('fooditem')
+            .doc(element.id)
+            .delete();
+      });
+    });
+
+    //delete order
+    restaurantCollection.doc(uid).collection('order').doc(fid).delete();
   }
 }

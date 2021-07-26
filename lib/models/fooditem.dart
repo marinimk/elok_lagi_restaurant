@@ -1,4 +1,5 @@
 class FoodItem {
+  final String hid;
   final String cid;
   final String cuid;
   final String fid;
@@ -8,13 +9,15 @@ class FoodItem {
   final int paxWanted;
   final String imageURL;
 
-  FoodItem(
-      {this.cid,
-      this.cuid,
-      this.fid,
-      this.ruid,
-      this.name,
-      this.salePrice,
-      this.paxWanted,
-      this.imageURL});
+  FoodItem({
+    this.hid,
+    this.cid,
+    this.cuid,
+    this.fid,
+    this.ruid,
+    this.name,
+    this.salePrice,
+    this.paxWanted,
+    this.imageURL,
+  });
 }

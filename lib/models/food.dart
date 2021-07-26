@@ -4,6 +4,7 @@ class Food {
   final String description;
   final double oriPrice;
   final double salePrice;
+  final String datetime;
   final int pax;
   final String imageURL;
 
@@ -13,6 +14,7 @@ class Food {
       this.description,
       this.oriPrice,
       this.salePrice,
+      this.datetime,
       this.pax,
       this.imageURL});
 }

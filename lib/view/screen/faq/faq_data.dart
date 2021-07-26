@@ -3,7 +3,7 @@ import 'package:elok_lagi_restaurant/models/faq.dart';
 import 'package:elok_lagi_restaurant/view/widgets/constants.dart';
 import 'package:elok_lagi_restaurant/view/widgets/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:elok_lagi_restaurant/view/widgets/elrAppBar.dart';
+import 'package:elok_lagi_restaurant/view/widgets/elr_appbar.dart';
 
 class FAQData extends StatefulWidget {
   @override

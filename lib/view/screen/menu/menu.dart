@@ -1,8 +1,8 @@
 import 'package:elok_lagi_restaurant/models/food.dart';
 import 'package:elok_lagi_restaurant/models/users.dart';
 import 'package:elok_lagi_restaurant/controller/database.dart';
-import 'package:elok_lagi_restaurant/view/widgets/elrAppBar.dart';
-import 'package:elok_lagi_restaurant/view/widgets/elrDrawer.dart';
+import 'package:elok_lagi_restaurant/view/widgets/elr_appbar.dart';
+import 'package:elok_lagi_restaurant/view/widgets/elr_drawer.dart';
 import 'package:elok_lagi_restaurant/view/widgets/food/food_list.dart';
 import 'package:elok_lagi_restaurant/view/widgets/food/menuAdd.dart';
 import 'package:elok_lagi_restaurant/view/widgets/loading.dart';
