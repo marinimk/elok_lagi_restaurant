@@ -1,6 +1,5 @@
 import 'package:elok_lagi_restaurant/controller/database.dart';
 import 'package:elok_lagi_restaurant/models/customer.dart';
-import 'package:elok_lagi_restaurant/view/widgets/loading.dart';
 import 'package:elok_lagi_restaurant/view/widgets/constants.dart';
 import 'package:flutter/material.dart';
 

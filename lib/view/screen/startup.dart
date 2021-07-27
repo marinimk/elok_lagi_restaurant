@@ -1,4 +1,5 @@
 import 'package:elok_lagi_restaurant/view/screen/faq/faq_list.dart';
+import 'package:elok_lagi_restaurant/view/screen/order/decline_list.dart';
 import 'package:elok_lagi_restaurant/view/screen/profile/profile.dart';
 import 'package:elok_lagi_restaurant/view/widgets/elr_appbar.dart';
 import 'package:elok_lagi_restaurant/view/screen/order/history_list.dart';
@@ -28,19 +29,20 @@ class _StartupState extends State<Startup> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   startUpCard(Icons.person, 'Profile', Profile()),
-                  startUpCard(Icons.list, 'Order', OrderList()),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  startUpCard(Icons.history, 'History', HistoryList()),
                   startUpCard(Icons.fastfood, 'Menu', Menu()),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  startUpCard(Icons.list, 'Order', OrderList()),
+                  startUpCard(Icons.history, 'History', HistoryList()),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  startUpCard(Icons.cancel, 'Decline', DeclineList()),
                   startUpCard(Icons.chat, 'FAQ', FAQList()),
                 ],
               ),

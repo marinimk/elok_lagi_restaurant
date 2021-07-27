@@ -7,14 +7,17 @@ class Order {
   final String pickUpTime;
   final String orderTime;
   final double totalPrice;
+  final bool accepted;
 
-  Order(
-      {this.oid,
-      this.cuid,
-      this.ruid,
-      this.message,
-      this.date,
-      this.pickUpTime,
-      this.orderTime,
-      this.totalPrice});
+  Order({
+    this.oid,
+    this.cuid,
+    this.ruid,
+    this.message,
+    this.date,
+    this.pickUpTime,
+    this.orderTime,
+    this.totalPrice,
+    this.accepted,
+  });
 }
