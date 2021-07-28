@@ -873,7 +873,7 @@ class DatabaseService {
   }
 
   //customer pickup order / order completed
-  Future<void> completeOrder() async {
+  Future completeOrder() async {
     await restaurantCollection.doc(uid).collection('history').doc(fid).update({
       'completed': true,
     });
