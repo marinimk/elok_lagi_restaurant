@@ -1,11 +1,11 @@
 import 'package:elok_lagi_restaurant/models/restaurant.dart';
 import 'package:elok_lagi_restaurant/controller/database.dart';
 import 'package:elok_lagi_restaurant/view/widgets/constants.dart';
-import 'package:elok_lagi_restaurant/view/widgets/profile/profile_picture.dart';
-import 'package:elok_lagi_restaurant/view/widgets/profile/updateProfile.dart';
+import 'package:elok_lagi_restaurant/view/screen/profile/profile_picture.dart';
+import 'package:elok_lagi_restaurant/view/screen/profile/updateProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:elok_lagi_restaurant/view/widgets/profile/restaurant_list.dart';
+import 'package:elok_lagi_restaurant/view/screen/profile/restaurant_list.dart';
 import 'package:elok_lagi_restaurant/models/users.dart';
 import 'package:elok_lagi_restaurant/view/widgets/elr_drawer.dart';
 

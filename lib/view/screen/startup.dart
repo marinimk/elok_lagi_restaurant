@@ -1,10 +1,10 @@
 import 'package:elok_lagi_restaurant/view/screen/faq/faq_list.dart';
-import 'package:elok_lagi_restaurant/view/screen/order/decline_list.dart';
+import 'package:elok_lagi_restaurant/view/screen/order/decline/decline_list.dart';
 import 'package:elok_lagi_restaurant/view/screen/profile/profile.dart';
 import 'package:elok_lagi_restaurant/view/widgets/elr_appbar.dart';
-import 'package:elok_lagi_restaurant/view/screen/order/history_list.dart';
+import 'package:elok_lagi_restaurant/view/screen/order/history/history_list.dart';
 import 'package:elok_lagi_restaurant/view/screen/menu/menu.dart';
-import 'package:elok_lagi_restaurant/view/screen/order/order_list.dart';
+import 'package:elok_lagi_restaurant/view/screen/order/new/order_list.dart';
 import 'package:flutter/material.dart';
 
 class Startup extends StatefulWidget {
