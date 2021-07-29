@@ -8,7 +8,7 @@ class Order {
   final String orderTime;
   final double totalPrice;
   final bool accepted;
-
+  final bool pending;
   Order({
     this.oid,
     this.cuid,
@@ -19,5 +19,6 @@ class Order {
     this.orderTime,
     this.totalPrice,
     this.accepted,
+    this.pending,
   });
 }
