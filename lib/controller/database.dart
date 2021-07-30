@@ -321,63 +321,79 @@ class DatabaseService {
 
   //? Accept order
   //creating an history subcollection, duplicated from order
-  Future createAccept(
-      String oid,
-      String cuid,
-      String ruid,
-      String message,
-      String date,
-      String pickUpTime,
-      String orderTime,
-      double totalPrice,
-      bool accepted) async {
-    await customerCollection.doc(cuid).collection('order').doc(fid).update({
-      'pending': false,
-      'accepted': true,
-      'ready': false,
-      'completed': false
-    });
+  Future createAccept() async {
+    var orderCust = customerCollection.doc(cuid).collection('order').doc(fid);
+    await orderCust.update({'accepted': true, 'pending': false});
+    // var acceptCustSub =
+    //     customerCollection.doc(cuid).collection('accept').doc(fid);
 
-    var order = restaurantCollection.doc(uid).collection('order').doc(fid);
-    var orderID = order.id;
-    var acceptSub =
-        restaurantCollection.doc(uid).collection('accept').doc(orderID);
+    // orderCust.get().then((value) {
+    //   acceptCustSub.set({
+    //     'aid': value.data()['oid'],
+    //     'oid': value.data()['oid'],
+    //     'cuid': value.data()['cuid'],
+    //     'ruid': value.data()['ruid'],
+    //     'message': value.data()['message'],
+    //     'date': value.data()['date'],
+    //     'pickUpTime': value.data()['pickUpTime'],
+    //     'orderTime': value.data()['orderTime'],
+    //     'totalPrice': value.data()['totalPrice'],
+    //     'accepted': true,
+    //     'ready': false,
+    //     'completed': false,
+    //     'pending': false
+    //   });
+    // });
 
-    acceptSub.set({
-      'aid': oid,
-      'oid': oid,
-      'cuid': cuid,
-      'ruid': ruid,
-      'message': message,
-      'date': date,
-      'pickUpTime': pickUpTime,
-      'orderTime': orderTime,
-      'totalPrice': totalPrice,
-      'accepted': true,
-      'ready': false,
-      'completed': false,
-      'pending': false
-    });
+    // //duplicating the fooditem from order into decline
+    // orderCust.collection('fooditem').get().then((value) {
+    //   value.docs.forEach((element) {
+    //     acceptCustSub.collection('fooditem').doc().set(element.data());
+    //   });
+    // });
 
-    //duplicating the fooditem from order into history
-    order.collection('fooditem').get().then((value) {
-      value.docs.forEach((element) {
-        restaurantCollection
-            .doc(uid)
-            .collection('accept')
-            .doc(orderID)
-            .collection('fooditem')
-            .doc()
-            .set(element.data());
+    var orderRest = restaurantCollection.doc(uid).collection('order').doc(fid);
+    var acceptRestSub =
+        restaurantCollection.doc(uid).collection('accept').doc(fid);
+
+    await orderRest.get().then((value) {
+      acceptRestSub.set({
+        'aid': value.data()['oid'],
+        'oid': value.data()['oid'],
+        'cuid': value.data()['cuid'],
+        'ruid': value.data()['ruid'],
+        'message': value.data()['message'],
+        'date': value.data()['date'],
+        'pickUpTime': value.data()['pickUpTime'],
+        'orderTime': value.data()['orderTime'],
+        'totalPrice': value.data()['totalPrice'],
+        'accepted': true,
+        'ready': false,
+        'completed': false,
+        'pending': false
       });
     });
 
-    deleteOrder();
+    //duplicating the fooditem from order into history
+    orderRest.collection('fooditem').get().then((val) {
+      val.docs.forEach((element) {
+        acceptRestSub.collection('fooditem').doc().set(element.data());
+      });
+    });
+    deleteOrderRestaurant();
   }
 
   //returning the list of history orders in a restaurant
   List<Accept> _acceptListFromSS(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
+      Timestamp pickUpTS = doc.data()['pickUpTime'] as Timestamp;
+      DateTime pickUpDT = pickUpTS.toDate();
+
+      Timestamp orderTS = doc.data()['orderTime'] as Timestamp;
+      DateTime orderDT = orderTS.toDate();
+
+      String orderT = DateFormat('jm').format(orderDT);
+      String pickUpT = DateFormat('jm').format(pickUpDT);
       return Accept(
         aid: doc.data()['aid'] ?? '',
         oid: doc.data()['oid'] ?? '',
@@ -385,9 +401,13 @@ class DatabaseService {
         ruid: doc.data()['ruid'] ?? '',
         message: doc.data()['message'] ?? '',
         date: doc.data()['date'] ?? '00/00/0000',
-        pickUpTime: doc.data()['pickUpTime'] ?? '00:00:00',
-        orderTime: doc.data()['orderTime'] ?? '00:00:00',
+        pickUpTime: pickUpT ?? '00:00:00',
+        orderTime: orderT ?? '00:00:00',
         totalPrice: doc.data()['totalPrice'] ?? 0,
+        accepted: doc.data()['accepted'] ?? true,
+        ready: doc.data()['ready'] ?? false,
+        completed: doc.data()['completed'] ?? false,
+        pending: doc.data()['pending'] ?? false,
       );
     }).toList();
   }
@@ -403,15 +423,25 @@ class DatabaseService {
 
   //returning a single history order
   Accept _acceptDataFromSS(DocumentSnapshot snapshot) {
+    Timestamp pickUpTS = snapshot.data()['pickUpTime'] as Timestamp;
+    DateTime pickUpDT = pickUpTS.toDate();
+
+    Timestamp orderTS = snapshot.data()['orderTime'] as Timestamp;
+    DateTime orderDT = orderTS.toDate();
+
+    String datee =
+        '${pickUpDT.day.toString().padLeft(2, '0')}/${pickUpDT.month.toString().padLeft(2, '0')}/${pickUpDT.year.toString().padLeft(2, '0')}';
+    String orderT = DateFormat('jm').format(orderDT);
+    String pickUpT = DateFormat('jm').format(pickUpDT);
     return Accept(
       aid: snapshot.data()['hid'] ?? '',
       oid: snapshot.data()['oid'] ?? '',
       cuid: snapshot.data()['cuid'] ?? '',
       ruid: snapshot.data()['ruid'] ?? '',
       message: snapshot.data()['message'] ?? '',
-      date: snapshot.data()['date'] ?? '00/00/0000',
-      pickUpTime: snapshot.data()['pickUpTime'] ?? '00:00:00',
-      orderTime: snapshot.data()['orderTime'] ?? '00:00:00',
+      date: datee ?? '00/00/0000',
+      pickUpTime: pickUpT ?? '00:00:00',
+      orderTime: orderT ?? '00:00:00',
       totalPrice: snapshot.data()['totalPrice'] ?? 0,
     );
   }
@@ -453,68 +483,68 @@ class DatabaseService {
 
   //? Decline order
   //creating an decline subcollection, duplicated from order
-  Future<void> createDecline(
-      String oid,
-      String cuid,
-      String ruid,
-      String message,
-      String date,
-      String pickUpTime,
-      String orderTime,
-      double totalPrice,
-      bool accepted) async {
-    await customerCollection
-        .doc(cuid)
-        .collection('order')
-        .doc(fid)
-        .update({'pending': false});
+  Future<void> createDecline() async {
+    var orderCust = customerCollection.doc(cuid).collection('order').doc(fid);
+    await orderCust.update({'accepted': false, 'pending': false});
+    // var orderCust = customerCollection.doc(cuid).collection('order').doc(fid);
+    // var declineCustSub =
+    //     customerCollection.doc(cuid).collection('decline').doc(fid);
 
-    var order = restaurantCollection.doc(uid).collection('order').doc(fid);
-    var orderID = order.id;
-    var declineSub =
-        restaurantCollection.doc(uid).collection('decline').doc(orderID);
+    // orderCust.get().then((value) {
+    //   declineCustSub.set({
+    //     'did': value.data()['oid'],
+    //     'oid': value.data()['oid'],
+    //     'cuid': value.data()['cuid'],
+    //     'ruid': value.data()['ruid'],
+    //     'message': value.data()['message'],
+    //     'date': value.data()['date'],
+    //     'pickUpTime': value.data()['pickUpTime'],
+    //     'orderTime': value.data()['orderTime'],
+    //     'totalPrice': value.data()['totalPrice'],
+    //     'accepted': false,
+    //     'ready': false,
+    //     'completed': false,
+    //     'pending': false
+    //   });
+    // });
 
-    // Timestamp pickUpTS = pickUpTime as Timestamp;
-    // DateTime pickUpDT = pickUpTS.toDate();
+    // //duplicating the fooditem from order into decline
+    // orderCust.collection('fooditem').get().then((value) {
+    //   value.docs.forEach((element) {
+    //     declineCustSub.collection('fooditem').doc().set(element.data());
+    //   });
+    // });
 
-    // Timestamp orderTS = orderTime as Timestamp;
-    // DateTime orderDT = orderTS.toDate();
+    var orderRest = restaurantCollection.doc(uid).collection('order').doc(fid);
+    var declineRestSub =
+        restaurantCollection.doc(uid).collection('decline').doc(fid);
 
-    // String datee =
-    //     '${pickUpDT.day.toString().padLeft(2, '0')}/${pickUpDT.month.toString().padLeft(2, '0')}/${pickUpDT.year.toString().padLeft(2, '0')}';
-    // String orderT = DateFormat('jm').format(orderDT);
-    // String pickUpT = DateFormat('jm').format(pickUpDT);
-
-    declineSub.set({
-      'did': oid,
-      'oid': oid,
-      'cuid': cuid,
-      'ruid': ruid,
-      'message': message,
-      'date': date,
-      'pickUpTime': pickUpTime,
-      'orderTime': orderTime,
-      'totalPrice': totalPrice,
-      'accepted': true,
-      'ready': false,
-      'completed': false,
-      'pending': false
-    });
-
-    //duplicating the fooditem from order into decline
-    order.collection('fooditem').get().then((value) {
-      value.docs.forEach((element) {
-        restaurantCollection
-            .doc(uid)
-            .collection('decline')
-            .doc(orderID)
-            .collection('fooditem')
-            .doc()
-            .set(element.data());
+    await orderRest.get().then((value) {
+      declineRestSub.set({
+        'did': value.data()['oid'],
+        'oid': value.data()['oid'],
+        'cuid': value.data()['cuid'],
+        'ruid': value.data()['ruid'],
+        'message': value.data()['message'],
+        'date': value.data()['date'],
+        'pickUpTime': value.data()['pickUpTime'],
+        'orderTime': value.data()['orderTime'],
+        'totalPrice': value.data()['totalPrice'],
+        'accepted': false,
+        'ready': false,
+        'completed': false,
+        'pending': false
       });
-
-      deleteOrder();
     });
+
+    //duplicating the fooditem from order into history
+    orderRest.collection('fooditem').get().then((val) {
+      val.docs.forEach((element) {
+        declineRestSub.collection('fooditem').doc().set(element.data());
+      });
+    });
+    // deleteOrderCustomer();
+    deleteOrderRestaurant();
   }
 
   //returning the list of fooditems in the history order
@@ -546,6 +576,14 @@ class DatabaseService {
   //returning the list of decline orders in a restaurant
   List<Decline> _declineListFromSS(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
+      Timestamp pickUpTS = doc.data()['pickUpTime'] as Timestamp;
+      DateTime pickUpDT = pickUpTS.toDate();
+
+      Timestamp orderTS = doc.data()['orderTime'] as Timestamp;
+      DateTime orderDT = orderTS.toDate();
+
+      String orderT = DateFormat('jm').format(orderDT);
+      String pickUpT = DateFormat('jm').format(pickUpDT);
       return Decline(
         did: doc.data()['did'] ?? '',
         oid: doc.data()['oid'] ?? '',
@@ -553,8 +591,8 @@ class DatabaseService {
         ruid: doc.data()['ruid'] ?? '',
         message: doc.data()['message'] ?? '',
         date: doc.data()['date'] ?? '00/00/0000',
-        pickUpTime: doc.data()['pickUpTime'] ?? '00:00:00',
-        orderTime: doc.data()['orderTime'] ?? '00:00:00',
+        pickUpTime: pickUpT ?? '00:00:00',
+        orderTime: orderT ?? '00:00:00',
         totalPrice: doc.data()['totalPrice'] ?? 0,
         accepted: doc.data()['accepted'] ?? false,
         ready: doc.data()['ready'] ?? false,
@@ -568,22 +606,32 @@ class DatabaseService {
     return restaurantCollection
         .doc(uid)
         .collection('decline')
-        .orderBy('pickUpTime', descending: false)
+        // .orderBy('pickUpTime', descending: false)
         .snapshots()
         .map(_declineListFromSS);
   }
 
   //returning a single decline order
   Decline _declineDataFromSS(DocumentSnapshot snapshot) {
+    Timestamp pickUpTS = snapshot.data()['pickUpTime'] as Timestamp;
+    DateTime pickUpDT = pickUpTS.toDate();
+
+    Timestamp orderTS = snapshot.data()['orderTime'] as Timestamp;
+    DateTime orderDT = orderTS.toDate();
+
+    String datee =
+        '${pickUpDT.day.toString().padLeft(2, '0')}/${pickUpDT.month.toString().padLeft(2, '0')}/${pickUpDT.year.toString().padLeft(2, '0')}';
+    String orderT = DateFormat('jm').format(orderDT);
+    String pickUpT = DateFormat('jm').format(pickUpDT);
     return Decline(
       did: snapshot.data()['did'] ?? '',
       oid: snapshot.data()['oid'] ?? '',
       cuid: snapshot.data()['cuid'] ?? '',
       ruid: snapshot.data()['ruid'] ?? '',
       message: snapshot.data()['message'] ?? '',
-      date: snapshot.data()['date'] ?? '00/00/0000',
-      pickUpTime: snapshot.data()['pickUpTime'] ?? '00:00:00',
-      orderTime: snapshot.data()['orderTime'] ?? '00:00:00',
+      date: datee ?? '00/00/0000',
+      pickUpTime: pickUpT ?? '00:00:00',
+      orderTime: orderT ?? '00:00:00',
       totalPrice: snapshot.data()['totalPrice'] ?? 0,
       accepted: snapshot.data()['accepted'] ?? false,
       ready: snapshot.data()['ready'] ?? false,
@@ -603,8 +651,24 @@ class DatabaseService {
 
 //? deleting subs
   //delete order after history was made
-  void deleteOrder() {
+  void deleteOrderRestaurant() {
     var toDelete = restaurantCollection.doc(uid).collection('order').doc(fid);
+
+    //delete the fooditems in order
+    Future<QuerySnapshot> foodItemInOrder =
+        toDelete.collection('fooditem').get();
+    foodItemInOrder.then((value) {
+      value.docs.forEach((element) {
+        toDelete.collection('fooditem').doc(element.id).delete();
+      });
+    });
+
+    //delete order
+    toDelete.delete();
+  }
+
+  void deleteOrderCustomer() {
+    var toDelete = customerCollection.doc(cuid).collection('order').doc(fid);
 
     //delete the fooditems in order
     Future<QuerySnapshot> foodItemInOrder =
@@ -621,119 +685,192 @@ class DatabaseService {
 
   //delete order after history was made
   void deleteAccept() {
-    var toDelete = restaurantCollection.doc(uid).collection('accept').doc(fid);
+    var toDeleteRest =
+        restaurantCollection.doc(uid).collection('accept').doc(fid);
+    var toDeleteCust =
+        customerCollection.doc(cuid).collection('accept').doc(fid);
 
     //delete the fooditems in order
-    Future<QuerySnapshot> foodItemInOrder =
-        toDelete.collection('fooditem').get();
-    foodItemInOrder.then((value) {
+    Future<QuerySnapshot> foodItemInRestAccept =
+        toDeleteRest.collection('fooditem').get();
+    foodItemInRestAccept.then((value) {
       value.docs.forEach((element) {
-        toDelete.collection('fooditem').doc(element.id).delete();
+        toDeleteRest.collection('fooditem').doc(element.id).delete();
+      });
+    });
+    Future<QuerySnapshot> foodItemInCustAccept =
+        toDeleteCust.collection('fooditem').get();
+    foodItemInCustAccept.then((value) {
+      value.docs.forEach((element) {
+        toDeleteCust.collection('fooditem').doc(element.id).delete();
       });
     });
 
     //delete order
-    toDelete.delete();
+    toDeleteRest.delete();
+    toDeleteCust.delete();
   }
 
   //delete order after history was made
   void deleteDecline() {
-    var toDelete = restaurantCollection.doc(uid).collection('decline').doc(fid);
+    var toDeleteRest =
+        restaurantCollection.doc(uid).collection('decline').doc(fid);
+    var toDeleteCust =
+        customerCollection.doc(cuid).collection('decline').doc(fid);
 
     //delete the fooditems in order
-    Future<QuerySnapshot> foodItemInOrder =
-        toDelete.collection('fooditem').get();
-    foodItemInOrder.then((value) {
+    Future<QuerySnapshot> foodItemInRestDecline =
+        toDeleteRest.collection('fooditem').get();
+    foodItemInRestDecline.then((value) {
       value.docs.forEach((element) {
-        toDelete.collection('fooditem').doc(element.id).delete();
+        toDeleteRest.collection('fooditem').doc(element.id).delete();
+      });
+    });
+    Future<QuerySnapshot> foodItemInCustDecline =
+        toDeleteCust.collection('fooditem').get();
+    foodItemInCustDecline.then((value) {
+      value.docs.forEach((element) {
+        toDeleteCust.collection('fooditem').doc(element.id).delete();
       });
     });
 
     //delete order
-    toDelete.delete();
+    toDeleteRest.delete();
+    toDeleteCust.delete();
   }
 
 //? History @ Orders that are completed
   //creating an history subcollection, duplicated from accept
   Future createHistoryFromAccept() async {
-    var order = restaurantCollection.doc(uid).collection('accept').doc(fid);
-    var orderID = order.id;
-    var historySub =
-        restaurantCollection.doc(uid).collection('history').doc(orderID);
+    var orderRest = restaurantCollection.doc(uid).collection('accept').doc(fid);
+    var historyRestSub =
+        restaurantCollection.doc(uid).collection('acceptHistory').doc(fid);
 
     //duplicating order into history
-    order.get().then((value) {
-      historySub.set(value.data());
-      historySub.update({
-        'hid': orderID,
+    orderRest.get().then((value) {
+      historyRestSub.set({
+        'ahid': fid,
+        'cuid': value.data()['cuid'],
+        'ruid': value.data()['ruid'],
+        'message': value.data()['message'],
+        'date': value.data()['date'],
+        'pickUpTime': value.data()['pickUpTime'],
+        'orderTime': value.data()['orderTime'],
+        'totalPrice': value.data()['totalPrice'],
         'ready': true,
         'completed': false,
-        'aid': FieldValue.delete(),
-        'oid': FieldValue.delete(),
-        'pending': false,
+        'accepted': value.data()['accepted'],
+        'pending': value.data()['pending']
       });
     });
 
     //duplicating the fooditem from order into history
-    order.collection('fooditem').get().then((value) {
+    orderRest.collection('fooditem').get().then((value) {
       value.docs.forEach((element) {
         restaurantCollection
             .doc(uid)
-            .collection('history')
-            .doc(orderID)
+            .collection('acceptHistory')
+            .doc(fid)
             .collection('fooditem')
             .doc()
             .set(element.data());
       });
     });
+
+    await customerCollection
+        .doc(cuid)
+        .collection('order')
+        .doc(fid)
+        .update({'ready': true});
+
     deleteAccept();
   }
 
   //creating an history subcollection, duplicated from accept
   Future createHistoryFromDecline(String reason) async {
-    var order = restaurantCollection.doc(uid).collection('decline').doc(fid);
-    var orderID = order.id;
-    var historySub =
-        restaurantCollection.doc(uid).collection('history').doc(orderID);
+    var orderRest =
+        restaurantCollection.doc(uid).collection('decline').doc(fid);
+    var historyRestSub =
+        restaurantCollection.doc(uid).collection('declineHistory').doc(fid);
+
+    var orderCust = customerCollection.doc(cuid).collection('order').doc(fid);
+    var historyCustSub =
+        customerCollection.doc(cuid).collection('declineHistory').doc(fid);
 
     //duplicating order into history
-    order.get().then((value) {
-      historySub.set(value.data());
-      historySub.update({
-        'hid': orderID,
-        'did': FieldValue.delete(),
-        'oid': FieldValue.delete(),
-        'reason': reason,
+    orderRest.get().then((value) {
+      historyRestSub.set(value.data());
+      historyRestSub.update({
+        'dhid': fid,
+        'cuid': value.data()['cuid'],
+        'ruid': value.data()['ruid'],
+        'message': value.data()['message'],
+        'date': value.data()['date'],
+        'pickUpTime': value.data()['pickUpTime'],
+        'orderTime': value.data()['orderTime'],
+        'totalPrice': value.data()['totalPrice'],
+        'ready': false,
+        'completed': false,
+        'accepted': false,
         'pending': false,
+        'reason': reason
+      });
+      historyCustSub.set({
+        'dhid': fid,
+        'cuid': cuid,
+        'ruid': value.data()['ruid'],
+        'message': value.data()['message'],
+        'date': value.data()['date'],
+        'pickUpTime': value.data()['pickUpTime'],
+        'orderTime': value.data()['orderTime'],
+        'totalPrice': value.data()['totalPrice'],
+        'ready': false,
+        'completed': false,
+        'accepted': false,
+        'pending': false,
+        'reason': reason
       });
     });
 
     //duplicating the fooditem from order into history
-    order.collection('fooditem').get().then((value) {
+    orderRest.collection('fooditem').get().then((value) {
       value.docs.forEach((element) {
-        restaurantCollection
-            .doc(uid)
-            .collection('history')
-            .doc(orderID)
-            .collection('fooditem')
-            .doc()
-            .set(element.data());
+        historyRestSub.collection('fooditem').doc().set(element.data());
       });
     });
+
+    //duplicating the fooditem from order into history
+    orderCust.collection('fooditem').get().then((value) {
+      value.docs.forEach((element) {
+        historyCustSub.collection('fooditem').doc().set(element.data());
+      });
+    });
+
     deleteDecline();
+    deleteOrderCustomer();
   }
 
   //returning the list of history orders in a restaurant
-  List<History> _historyListFromSS(QuerySnapshot snapshot) {
+  List<AcceptHistory> _acceptHistoryListFromSS(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      return History(
-        hid: doc.data()['hid'] ?? '',
+      Timestamp pickUpTS = doc.data()['pickUpTime'] as Timestamp;
+      DateTime pickUpDT = pickUpTS.toDate();
+
+      Timestamp orderTS = doc.data()['orderTime'] as Timestamp;
+      DateTime orderDT = orderTS.toDate();
+
+      String datee =
+          '${pickUpDT.day.toString().padLeft(2, '0')}/${pickUpDT.month.toString().padLeft(2, '0')}/${pickUpDT.year.toString().padLeft(2, '0')}';
+      String orderT = DateFormat('jm').format(orderDT);
+      String pickUpT = DateFormat('jm').format(pickUpDT);
+      return AcceptHistory(
+        ahid: doc.data()['ahid'] ?? '',
         cuid: doc.data()['cuid'] ?? '',
         ruid: doc.data()['ruid'] ?? '',
         message: doc.data()['message'] ?? '',
         date: doc.data()['date'] ?? '00/00/0000',
-        pickUpTime: doc.data()['pickUpTime'] ?? '00:00:00',
-        orderTime: doc.data()['orderTime'] ?? '00:00:00',
+        pickUpTime: pickUpT ?? '00:00:00',
+        orderTime: orderT ?? '00:00:00',
         totalPrice: doc.data()['totalPrice'] ?? 0,
         ready: doc.data()['ready'] ?? false,
         completed: doc.data()['completed'] ?? false,
@@ -744,26 +881,36 @@ class DatabaseService {
     }).toList();
   }
 
-  Stream<List<History>> get history {
+  Stream<List<AcceptHistory>> get acceptHistory {
     return restaurantCollection
         .doc(uid)
-        .collection('history')
-        .orderBy('date', descending: true)
+        .collection('acceptHistory')
+        // .orderBy('date', descending: true)
         // .orderBy('pickUpTime', descending: true)
         .snapshots()
-        .map(_historyListFromSS);
+        .map(_acceptHistoryListFromSS);
   }
 
   //returning a single history order
-  History _historyDataFromSS(DocumentSnapshot snapshot) {
-    return History(
-      hid: snapshot.data()['hid'] ?? '',
+  AcceptHistory _acceptHistoryDataFromSS(DocumentSnapshot snapshot) {
+    Timestamp pickUpTS = snapshot.data()['pickUpTime'] as Timestamp;
+    DateTime pickUpDT = pickUpTS.toDate();
+
+    Timestamp orderTS = snapshot.data()['orderTime'] as Timestamp;
+    DateTime orderDT = orderTS.toDate();
+
+    String datee =
+        '${pickUpDT.day.toString().padLeft(2, '0')}/${pickUpDT.month.toString().padLeft(2, '0')}/${pickUpDT.year.toString().padLeft(2, '0')}';
+    String orderT = DateFormat('jm').format(orderDT);
+    String pickUpT = DateFormat('jm').format(pickUpDT);
+    return AcceptHistory(
+      ahid: snapshot.data()['ahid'] ?? '',
       cuid: snapshot.data()['cuid'] ?? '',
       ruid: snapshot.data()['ruid'] ?? '',
       message: snapshot.data()['message'] ?? '',
       date: snapshot.data()['date'] ?? '00/00/0000',
-      pickUpTime: snapshot.data()['pickUpTime'] ?? '00:00:00',
-      orderTime: snapshot.data()['orderTime'] ?? '00:00:00',
+      pickUpTime: pickUpT ?? '00:00:00',
+      orderTime: orderT ?? '00:00:00',
       totalPrice: snapshot.data()['totalPrice'] ?? 0,
       ready: snapshot.data()['ready'] ?? false,
       completed: snapshot.data()['completed'] ?? false,
@@ -773,17 +920,17 @@ class DatabaseService {
     );
   }
 
-  Stream<History> get historyData {
+  Stream<AcceptHistory> get acceptHistoryData {
     return restaurantCollection
         .doc(uid)
-        .collection('history')
+        .collection('acceptHistory')
         .doc(fid)
         .snapshots()
-        .map(_historyDataFromSS);
+        .map(_acceptHistoryDataFromSS);
   }
 
   //returning the list of fooditems in the history order
-  List<FoodItem> _historyFoodItemListFromSS(QuerySnapshot snapshot) {
+  List<FoodItem> _acceptHistoryFoodItemListFromSS(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return FoodItem(
         cid: doc.data()['cid'] ?? '',
@@ -798,30 +945,146 @@ class DatabaseService {
     }).toList();
   }
 
-  Stream<List<FoodItem>> get historyFoodItem {
+  Stream<List<FoodItem>> get acceptHistoryFoodItem {
     return restaurantCollection
         .doc(uid)
-        .collection('history')
+        .collection('acceptHistory')
         .doc(fid)
         .collection('fooditem')
         .snapshots()
-        .map(_historyFoodItemListFromSS);
+        .map(_acceptHistoryFoodItemListFromSS);
+  }
+
+  //returning the list of history orders in a restaurant
+  List<DeclineHistory> _declineHistoryListFromSS(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      Timestamp pickUpTS = doc.data()['pickUpTime'] as Timestamp;
+      DateTime pickUpDT = pickUpTS.toDate();
+
+      Timestamp orderTS = doc.data()['orderTime'] as Timestamp;
+      DateTime orderDT = orderTS.toDate();
+
+      String datee =
+          '${pickUpDT.day.toString().padLeft(2, '0')}/${pickUpDT.month.toString().padLeft(2, '0')}/${pickUpDT.year.toString().padLeft(2, '0')}';
+      String orderT = DateFormat('jm').format(orderDT);
+      String pickUpT = DateFormat('jm').format(pickUpDT);
+      return DeclineHistory(
+        dhid: doc.data()['dhid'] ?? '',
+        cuid: doc.data()['cuid'] ?? '',
+        ruid: doc.data()['ruid'] ?? '',
+        message: doc.data()['message'] ?? '',
+        date: doc.data()['date'] ?? '00/00/0000',
+        pickUpTime: pickUpT ?? '00:00:00',
+        orderTime: orderT ?? '00:00:00',
+        totalPrice: doc.data()['totalPrice'] ?? 0,
+        ready: doc.data()['ready'] ?? false,
+        completed: doc.data()['completed'] ?? false,
+        accepted: doc.data()['accepted'] ?? false,
+        reason: doc.data()['reason'] ?? '',
+        pending: doc.data()['pending'] ?? true,
+      );
+    }).toList();
+  }
+
+  Stream<List<DeclineHistory>> get declineHistory {
+    return restaurantCollection
+        .doc(uid)
+        .collection('declineHistory')
+        .orderBy('date', descending: true)
+        // .orderBy('pickUpTime', descending: true)
+        .snapshots()
+        .map(_declineHistoryListFromSS);
+  }
+
+  //returning a single history order
+  DeclineHistory _declineHistoryDataFromSS(DocumentSnapshot snapshot) {
+    Timestamp pickUpTS = snapshot.data()['pickUpTime'] as Timestamp;
+    DateTime pickUpDT = pickUpTS.toDate();
+
+    Timestamp orderTS = snapshot.data()['orderTime'] as Timestamp;
+    DateTime orderDT = orderTS.toDate();
+
+    String datee =
+        '${pickUpDT.day.toString().padLeft(2, '0')}/${pickUpDT.month.toString().padLeft(2, '0')}/${pickUpDT.year.toString().padLeft(2, '0')}';
+    String orderT = DateFormat('jm').format(orderDT);
+    String pickUpT = DateFormat('jm').format(pickUpDT);
+    return DeclineHistory(
+      dhid: snapshot.data()['dhid'] ?? '',
+      cuid: snapshot.data()['cuid'] ?? '',
+      ruid: snapshot.data()['ruid'] ?? '',
+      message: snapshot.data()['message'] ?? '',
+      date: snapshot.data()['date'] ?? '00/00/0000',
+      pickUpTime: pickUpT ?? '00:00:00',
+      orderTime: orderT ?? '00:00:00',
+      totalPrice: snapshot.data()['totalPrice'] ?? 0,
+      ready: snapshot.data()['ready'] ?? false,
+      completed: snapshot.data()['completed'] ?? false,
+      accepted: snapshot.data()['accepted'] ?? false,
+      reason: snapshot.data()['reason'] ?? '',
+      pending: snapshot.data()['pending'] ?? true,
+    );
+  }
+
+  Stream<DeclineHistory> get declineHistoryData {
+    return restaurantCollection
+        .doc(uid)
+        .collection('declineHistory')
+        .doc(fid)
+        .snapshots()
+        .map(_declineHistoryDataFromSS);
+  }
+
+  //returning the list of fooditems in the history order
+  List<FoodItem> _declineHistoryFoodItemListFromSS(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return FoodItem(
+        cid: doc.data()['cid'] ?? '',
+        cuid: doc.data()['cuid'] ?? '',
+        fid: doc.data()['fid'] ?? '',
+        ruid: doc.data()['ruid'] ?? '',
+        name: doc.data()['name'] ?? '',
+        salePrice: doc.data()['salePrice'] ?? 0.0,
+        paxWanted: doc.data()['paxWanted'] ?? 0,
+        imageURL: doc.data()['imageURL'] ?? '',
+      );
+    }).toList();
+  }
+
+  Stream<List<FoodItem>> get declineHistoryFoodItem {
+    return restaurantCollection
+        .doc(uid)
+        .collection('declineHistory')
+        .doc(fid)
+        .collection('fooditem')
+        .snapshots()
+        .map(_declineHistoryFoodItemListFromSS);
   }
 
   //? order status
   //restaurant ready order
-  Future<void> readyOrder() async {
-    // restaurant order moved into history.
-    // ready: true and completed: false are set there
+  // Future<void> readyOrder() async {
+  //   // restaurant order moved into history.
+  //   // ready: true and completed: false are set there
 
-    await customerCollection.doc(uid).collection('order').doc(fid).update({
-      'ready': true,
-    });
-  }
+  //   // restaurantCollection
+  //   //     .doc(uid)
+  //   //     .collection('accept')
+  //   //     .doc(fid)
+  //   //     .update({'ready': true});
+  //   await customerCollection
+  //       .doc(cuid)
+  //       .collection('order')
+  //       .doc(fid)
+  //       .update({'ready': true});
+  // }
 
   //customer pickup order / order completed
   Future completeOrder() async {
-    await restaurantCollection.doc(uid).collection('history').doc(fid).update({
+    await restaurantCollection
+        .doc(uid)
+        .collection('acceptHistory')
+        .doc(fid)
+        .update({
       'completed': true,
     });
     await customerCollection.doc(cuid).collection('order').doc(fid).update({
