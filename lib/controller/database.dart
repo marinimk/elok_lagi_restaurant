@@ -886,7 +886,7 @@ class DatabaseService {
         .doc(uid)
         .collection('acceptHistory')
         // .orderBy('date', descending: true)
-        // .orderBy('pickUpTime', descending: true)
+        .orderBy('pickUpTime', descending: true)
         .snapshots()
         .map(_acceptHistoryListFromSS);
   }
@@ -917,6 +917,8 @@ class DatabaseService {
       accepted: snapshot.data()['accepted'] ?? false,
       reason: snapshot.data()['reason'] ?? '',
       pending: snapshot.data()['pending'] ?? true,
+      feedback: snapshot.data()['feedback'] ?? 'No feedback',
+      rating: snapshot.data()['rating'] ?? 0,
     );
   }
 
@@ -1061,22 +1063,6 @@ class DatabaseService {
   }
 
   //? order status
-  //restaurant ready order
-  // Future<void> readyOrder() async {
-  //   // restaurant order moved into history.
-  //   // ready: true and completed: false are set there
-
-  //   // restaurantCollection
-  //   //     .doc(uid)
-  //   //     .collection('accept')
-  //   //     .doc(fid)
-  //   //     .update({'ready': true});
-  //   await customerCollection
-  //       .doc(cuid)
-  //       .collection('order')
-  //       .doc(fid)
-  //       .update({'ready': true});
-  // }
 
   //customer pickup order / order completed
   Future completeOrder() async {
@@ -1084,11 +1070,47 @@ class DatabaseService {
         .doc(uid)
         .collection('acceptHistory')
         .doc(fid)
-        .update({
-      'completed': true,
-    });
-    await customerCollection.doc(cuid).collection('order').doc(fid).update({
-      'completed': true,
-    });
+        .update({'completed': true});
+
+    // await customerCollection.doc(cuid).collection('order').doc(fid).update({
+    //   'completed': true,
+    // });
+  }
+
+  //retrieving the number of accepted orders
+  Future noOfAccepted() async {
+    QuerySnapshot accept =
+        await restaurantCollection.doc(uid).collection('acceptHistory').get();
+    int noOfAccept = accept.docs.length;
+    // print(noOfAccept);
+    return noOfAccept;
+  }
+
+  Future noOfDeclined() async {
+    QuerySnapshot decline =
+        await restaurantCollection.doc(uid).collection('declineHistory').get();
+    int noOfDecline = decline.docs.length;
+    // print(noOfDecline);
+    return noOfDecline;
+  }
+
+  //calculating the total price in the cart
+  Future calcSalesTotalPrice() async {
+    QuerySnapshot accept =
+        await restaurantCollection.doc(uid).collection('acceptHistory').get();
+    double totalSales = 0;
+
+    for (int i = 0; i < accept.docs.length; i++) {
+      var a = accept.docs[i];
+      var snapshot = await restaurantCollection
+          .doc(uid)
+          .collection('acceptHistory')
+          .doc(a.id)
+          .get();
+      double price = snapshot.data()['totalPrice'];
+      totalSales = totalSales + price;
+    }
+    print('total sales: $totalSales');
+    return totalSales;
   }
 }

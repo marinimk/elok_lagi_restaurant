@@ -1,3 +1,4 @@
+import 'package:elok_lagi_restaurant/view/screen/dashboard/dashboard.dart';
 import 'package:elok_lagi_restaurant/view/screen/faq/faq_list.dart';
 import 'package:elok_lagi_restaurant/view/screen/order/decline/decline_list.dart';
 import 'package:elok_lagi_restaurant/view/screen/profile/profile.dart';
@@ -42,7 +43,7 @@ class _StartupState extends State<Startup> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  startUpCard(Icons.cancel, 'Decline', DeclineList()),
+                  startUpCard(Icons.bar_chart, 'Dashboard', Dashboard()),
                   startUpCard(Icons.chat, 'FAQ', FAQList()),
                 ],
               ),
