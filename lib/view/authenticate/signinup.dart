@@ -2,6 +2,7 @@ import 'package:elok_lagi_restaurant/controller/auth.dart';
 import 'package:elok_lagi_restaurant/view/screen/startup.dart';
 import 'package:elok_lagi_restaurant/view/widgets/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 
 class SignInUp extends StatefulWidget {
   @override
@@ -17,8 +18,6 @@ class _SignInUpState extends State<SignInUp> {
   String email = '';
   String password = '';
   String cPassword = '';
-  String textError = '';
-  String error = '';
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final AuthService _auth = AuthService();
@@ -74,7 +73,7 @@ class _SignInUpState extends State<SignInUp> {
             child: AnimatedContainer(
               duration: Duration(milliseconds: 700),
               curve: Curves.easeInOutBack,
-              height: isSignupScreen ? 280 : 250,
+              height: isSignupScreen ? 310 : 250,
               padding: EdgeInsets.all(20),
               width: MediaQuery.of(context).size.width - 40,
               margin: EdgeInsets.symmetric(horizontal: 20),
@@ -166,41 +165,8 @@ class _SignInUpState extends State<SignInUp> {
         key: _formKey,
         child: Column(
           children: [
-            buildTextField(Icons.email, "Email", false, true),
-            buildTextField(Icons.lock, "Password", true, false),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Checkbox(
-                      value: isRememberMe,
-                      activeColor: Color(0XFF9BB3C0),
-                      onChanged: (value) {
-                        setState(() => isRememberMe = !isRememberMe);
-                      },
-                    ),
-                    Text(
-                      "Remember me",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Color(0XFFA7BCC7),
-                      ),
-                    )
-                  ],
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    "Forgot Password?",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Color(0XFFA7BCC7),
-                    ),
-                  ),
-                )
-              ],
-            )
+            buildEmailTextField(Icons.email, "Email"),
+            buildPasswordTextField(Icons.lock, "Password"),
           ],
         ),
       ),
@@ -211,13 +177,16 @@ class _SignInUpState extends State<SignInUp> {
     return Container(
       margin: EdgeInsets.only(top: 20),
       child: Form(
+        autovalidateMode: AutovalidateMode.always,
         key: _formKey,
         child: Column(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // buildTextField(Icons.house_siding, "Restaurant Name", false, false),
             // buildTextField(Icons.phone_android, "Phone Number", false, false),
-            buildTextField(Icons.email, "Email", false, true),
-            buildTextField(Icons.lock, "Password", true, false),
+            buildEmailTextField(Icons.email, "Email"),
+            buildPasswordTextField(Icons.lock, "Password"),
             // buildTextField(Icons.lock, "Confirm Password", true, false),
             Container(
               width: 200,
@@ -238,9 +207,6 @@ class _SignInUpState extends State<SignInUp> {
                 ),
               ),
             ),
-            Container(
-              child: Text(error),
-            ),
           ],
         ),
       ),
@@ -251,7 +217,7 @@ class _SignInUpState extends State<SignInUp> {
     return AnimatedPositioned(
       duration: Duration(milliseconds: 700),
       curve: Curves.easeInOutBack,
-      top: isSignupScreen ? 450 : 430,
+      top: isSignupScreen ? 490 : 430,
       right: 0,
       left: 0,
       child: Center(
@@ -282,7 +248,7 @@ class _SignInUpState extends State<SignInUp> {
                         if (result == null) {
                           setState(() {
                             loading = false;
-                            error = 'Please supply a valid email';
+                            // error = 'Please supply a valid email';
                           });
                         }
                       }
@@ -298,7 +264,7 @@ class _SignInUpState extends State<SignInUp> {
                         if (result == null) {
                           setState(() {
                             loading = false;
-                            error = 'Cannot sign in with those creds';
+                            // error = 'Cannot sign in with those creds';
                           });
                         }
                       }
@@ -332,35 +298,37 @@ class _SignInUpState extends State<SignInUp> {
     );
   }
 
-  Widget buildTextField(
-      IconData icon, String hintText, bool isPassword, bool isEmail) {
+  Widget buildEmailTextField(IconData icon, String hintText) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: TextFormField(
-        onChanged: (val) {
-           if (isEmail) {
+          onChanged: (val) {
             setState(() => email = val);
-          } else if (isPassword) {
+          },
+          validator: MultiValidator([
+            RequiredValidator(errorText: 'Please enter an email'),
+            EmailValidator(errorText: 'Email must be valid'),
+          ]),
+          keyboardType: TextInputType.emailAddress,
+          decoration: textInputDecoration(icon, hintText)),
+    );
+  }
+
+  Widget buildPasswordTextField(IconData icon, String hintText) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: TextFormField(
+          onChanged: (val) {
             setState(() => password = val);
-          }
-        },
-        validator: (val) {
-          if (val.isEmpty) {
-            if (isEmail) {
-              return 'isi email';
-            } else if (isPassword) {
-              textError = 'isi password';
-            }
-            return textError;
-          } else {
-            return null;
-          }
-        },
-        
-        obscureText: isPassword,
-        keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
-        decoration: textInputDecoration(icon, hintText)
-      ),
+          },
+          validator: MultiValidator([
+            RequiredValidator(errorText: 'Please enter a password'),
+            MinLengthValidator(6,
+                errorText: 'Password must consist at least 6 characters'),
+          ]),
+          obscureText: true,
+          keyboardType: TextInputType.text,
+          decoration: textInputDecoration(icon, hintText)),
     );
   }
 }

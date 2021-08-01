@@ -28,7 +28,7 @@ class _SettingState extends State<Setting> {
             final restaurant = snapshot.data;
             return Scaffold(
               drawer: ElrDrawer(),
-              appBar: ElrAppBar('Elok Lagi Merchant', false),
+              appBar: ElrAppBar('SETTINGS', false),
               body: Card(
                 margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                 shape: RoundedRectangleBorder(

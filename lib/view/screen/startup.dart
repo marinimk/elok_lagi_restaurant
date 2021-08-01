@@ -7,6 +7,7 @@ import 'package:elok_lagi_restaurant/view/screen/order/history/history_list.dart
 import 'package:elok_lagi_restaurant/view/screen/menu/menu.dart';
 import 'package:elok_lagi_restaurant/view/screen/order/new/order_list.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
 class Startup extends StatefulWidget {
   @override
@@ -26,27 +27,18 @@ class _StartupState extends State<Startup> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  startUpCard(Icons.person, 'Profile', Profile()),
-                  startUpCard(Icons.fastfood, 'Menu', Menu()),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  startUpCard(Icons.list, 'Order', OrderList()),
-                  startUpCard(Icons.history, 'History', HistoryList()),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  startUpCard(Icons.bar_chart, 'Dashboard', Dashboard()),
-                  startUpCard(Icons.chat, 'FAQ', FAQList()),
-                ],
-              ),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                startUpCard(Icons.person, 'Profile', Profile()),
+                startUpCard(Icons.fastfood, 'Menu', Menu())
+              ]),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                startUpCard(Icons.list, 'Order', OrderList()),
+                startUpCard(Icons.history, 'History', HistoryList())
+              ]),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                startUpCard(Icons.bar_chart, 'Dashboard', Dashboard()),
+                startUpCard(Icons.chat, 'FAQ', FAQList())
+              ]),
             ],
           ),
         ),
@@ -56,68 +48,45 @@ class _StartupState extends State<Startup> {
 
   Widget startUpCard(IconData icon, String title, Widget page) {
     return Container(
-      // color:Colors.pink,
       padding: EdgeInsets.all(15),
       child: ElevatedButton(
         child: Column(
           children: [
-            Icon(
-              icon,
-              size: 50,
-              color: Color(0xffF3F7F2),
-            ),
+            Icon(icon, size: 50, color: Color(0xffF3F7F2)),
             SizedBox(height: 5),
-            Text(
-              title,
-              style: TextStyle(
-                color: Color(0xffF3F7F2),
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            Text(title,
+                style: TextStyle(
+                    color: Color(0xffF3F7F2),
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold))
           ],
         ),
         style: ElevatedButton.styleFrom(
-          // elevation: 5.0,
-          primary: Color(0xff2F4C2F),
-          minimumSize: Size(150, 150),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-        ),
-        onPressed: () {
-          Navigator.pushReplacement(
+            primary: Color(0xff2F4C2F),
+            minimumSize: Size(150, 150),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15))),
+        onPressed: () => Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => page),
-          );
-        },
+            PageTransition(
+              type: PageTransitionType.bottomToTop,
+              child: page,
+            )),
       ),
     );
   }
 
   ElevatedButton buildElevatedButton() {
     return ElevatedButton(
-      onPressed: () {
-        buildShowAlert(context);
-      },
+      onPressed: () => buildShowAlert(context),
       child: Row(
         children: <Widget>[
-          Icon(
-            Icons.fiber_manual_record,
-            size: 15,
-            color: Colors.green,
-          ),
-          SizedBox(
-            width: 5,
-          ),
-          Text(
-            'OPEN',
-          ),
+          Icon(Icons.fiber_manual_record, size: 15, color: Colors.green),
+          SizedBox(width: 5),
+          Text('OPEN')
         ],
       ),
-      style: ElevatedButton.styleFrom(
-        primary: Colors.black,
-      ),
+      style: ElevatedButton.styleFrom(primary: Colors.black),
     );
   }
 
@@ -126,91 +95,43 @@ class _StartupState extends State<Startup> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Center(child: Text('Your restaurant is Open')),
-          // titlePadding: EdgeInsets.fromWindowPadding(padding, devicePixelRatio),
-          content: Text('Do you want to change your status?'),
-          actions: [
-            OutlinedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Row(children: [
-                Icon(
-                  Icons.close,
-                  size: 15,
-                  color: Colors.red,
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  'Cancel',
-                  style: TextStyle(
-                    color: Colors.red,
-                  ),
-                ),
-              ]),
-              style: OutlinedButton.styleFrom(
-                side: BorderSide(
-                  width: 1.5,
-                ),
-                // backgroundColor: Colors.black,
-              ),
-            ),
-            OutlinedButton(
-              onPressed: () {},
-              child: Row(children: [
-                Icon(
-                  Icons.fiber_manual_record,
-                  size: 15,
-                  color: Colors.red,
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  'Close',
-                  style: TextStyle(
-                    color: Colors.red,
-                  ),
-                ),
-              ]),
-              style: OutlinedButton.styleFrom(
-                side: BorderSide(
-                  width: 1.5,
-                ),
-                // backgroundColor: Colors.black,
-              ),
-            ),
-            OutlinedButton(
-              onPressed: () {},
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.fiber_manual_record,
-                    size: 15,
-                    color: Colors.amber,
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
+            title: Center(child: Text('Your restaurant is Open')),
+            content: Text('Do you want to change your status?'),
+            actions: [
+              OutlinedButton(
+                onPressed: () => Navigator.pop(context),
+                child: Row(children: [
+                  Icon(Icons.close, size: 15, color: Colors.red),
+                  SizedBox(width: 5),
                   Text(
-                    'Busy',
-                    style: TextStyle(
-                      color: Colors.amber,
-                    ),
+                    'Cancel',
+                    style: TextStyle(color: Colors.red),
                   ),
-                ],
-              ),
-              style: OutlinedButton.styleFrom(
-                side: BorderSide(
-                  width: 1.5,
+                ]),
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(width: 1.5),
                 ),
-                // backgroundColor: Colors.black,
               ),
-            ),
-          ],
-        );
+              OutlinedButton(
+                  onPressed: () {},
+                  child: Row(children: [
+                    Icon(Icons.fiber_manual_record,
+                        size: 15, color: Colors.red),
+                    SizedBox(width: 5),
+                    Text('Close', style: TextStyle(color: Colors.red))
+                  ]),
+                  style:
+                      OutlinedButton.styleFrom(side: BorderSide(width: 1.5))),
+              OutlinedButton(
+                  onPressed: () {},
+                  child: Row(children: [
+                    Icon(Icons.fiber_manual_record,
+                        size: 15, color: Colors.amber),
+                    SizedBox(width: 5),
+                    Text('Busy', style: TextStyle(color: Colors.amber))
+                  ]),
+                  style: OutlinedButton.styleFrom(side: BorderSide(width: 1.5)))
+            ]);
       },
     );
   }

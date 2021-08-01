@@ -26,7 +26,7 @@ class _MenuState extends State<Menu> {
             initialData: [],
             value: DatabaseService(uid: user.uid).food,
             child: Scaffold(
-              appBar: ElrAppBar('Menu', false),
+              appBar: ElrAppBar('MENU', false),
               drawer: ElrDrawer(),
               floatingActionButton: FloatingActionButton(
                 onPressed: () {

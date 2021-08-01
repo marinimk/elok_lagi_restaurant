@@ -6,6 +6,7 @@ import 'package:elok_lagi_restaurant/view/widgets/elr_appbar.dart';
 import 'package:elok_lagi_restaurant/view/widgets/elr_drawer.dart';
 import 'package:elok_lagi_restaurant/view/widgets/loading.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 class FAQList extends StatefulWidget {
@@ -35,12 +36,12 @@ class _FAQListState extends State<FAQList> {
                 itemBuilder: (context, index) => GestureDetector(
                   onTap: () {
                     Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => FAQData(
-                                faqid: faq[index].faqid,
-                              )),
-                    );
+                        context,
+                        PageTransition(
+                            type: PageTransitionType.rightToLeft,
+                            child: FAQData(
+                              faqid: faq[index].faqid,
+                            )));
                   },
                   child: Card(
                     margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),

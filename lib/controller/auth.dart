@@ -12,9 +12,7 @@ class AuthService {
 
   // auth change user stream
   Stream<Users> get user {
-    return _auth
-        .authStateChanges()
-        .map(_userFromFirebaseUser);
+    return _auth.authStateChanges().map(_userFromFirebaseUser);
   }
 
   // sign in with email and password
@@ -43,13 +41,31 @@ class AuthService {
           'phoneNum',
           false,
           'https://firebasestorage.googleapis.com/v0/b/elok-lagi.appspot.com/o/dafultUser.png?alt=media&token=d817ae55-f30c-47c6-bd75-30348e18eb73');
-      // await DatabaseService(uid: restaurant.uid)
-      //     .updateFoodData('description', 'marini', 0.0, 0.0, 0);
       return _userFromFirebaseUser(user);
-    } catch (error) {
-      print(error.toString());
-      return null;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
     }
+
+    // try {
+    //   UserCredential result = await _auth.createUserWithEmailAndPassword(
+    //       email: email, password: password);
+    //   User user = result.user;
+    //   await DatabaseService(uid: user.uid).updateRestaurantData(
+    //       'name',
+    //       'category',
+    //       'location',
+    //       'phoneNum',
+    //       false,
+    //       'https://firebasestorage.googleapis.com/v0/b/elok-lagi.appspot.com/o/dafultUser.png?alt=media&token=d817ae55-f30c-47c6-bd75-30348e18eb73');
+    //   return _userFromFirebaseUser(user);
+    // } catch (error) {
+    //   print(error.toString());
+    //   return null;
+    // }
   }
 
   // sign out
