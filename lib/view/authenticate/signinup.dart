@@ -37,31 +37,13 @@ class _SignInUpState extends State<SignInUp> {
               height: 300,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image:
-                        AssetImage("assets/images/elok_lagi_transparent.png"),
+                    image: AssetImage(
+                        "assets/images/elok_lagi_merchant_transparent.png"),
                     fit: BoxFit.cover),
               ),
               child: Container(
                 padding: EdgeInsets.only(top: 90, left: 20),
                 color: Color(0xff76a973).withOpacity(.5),
-                // child: Column(
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
-                //     BorderedText(
-                //       strokeColor: Colors.grey[800],
-                //       strokeWidth: 5,
-                //       child: Text(
-                //         'Welcome to Elok Lagi',
-                //         style: TextStyle(
-                //           fontSize: 25,
-                //           fontWeight: FontWeight.bold,
-                //           letterSpacing: 2,
-                //           color: Colors.yellow[700],
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
               ),
             ),
           ),

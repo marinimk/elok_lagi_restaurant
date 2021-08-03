@@ -9,7 +9,6 @@ import 'package:elok_lagi_restaurant/wrapper.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   runApp(MyApp());
 }
 
