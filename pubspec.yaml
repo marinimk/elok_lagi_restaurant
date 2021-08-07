@@ -45,6 +45,7 @@ dependencies:
   charts_flutter: ^0.10.0
   page_transition: ^2.0.2
   form_field_validator: ^1.0.1
+  flutter_rating_bar: ^4.0.0
 
 dev_dependencies:
   flutter_test:
