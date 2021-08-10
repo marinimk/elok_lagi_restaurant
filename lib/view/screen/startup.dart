@@ -36,7 +36,7 @@ class _StartupState extends State<Startup> {
                 startUpCard(Icons.history, 'History', HistoryList())
               ]),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                startUpCard(Icons.bar_chart, 'Dashboard', Dashboard()),
+                startUpCard(Icons.bar_chart, 'Dashboard', DashboardData()),
                 startUpCard(Icons.chat, 'FAQ', FAQList())
               ]),
             ],

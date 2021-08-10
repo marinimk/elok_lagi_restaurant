@@ -57,6 +57,80 @@ class DatabaseService {
     return restaurantCollection.doc(uid).snapshots().map(_restaurantDataFromSS);
   }
 
+  //? Dashboard
+
+  Future createDashboard(int accept, int decline, double sales) async {
+    return await restaurantCollection
+        .doc(uid)
+        .collection('dashboard')
+        .doc(uid)
+        .set({'accept': accept, 'decline': decline, 'sales': sales});
+  }
+
+  Future updateDashboard() async {
+    int accept = await noOfAccepted();
+    int decline = await noOfDeclined();
+    double sales = await calcSalesTotalPrice();
+
+    return restaurantCollection.doc(uid).collection('dashboard').doc(uid).set({
+      'accept': accept,
+      'decline': decline,
+      'sales': sales,
+    });
+  }
+
+  // retrieving the number of accepted orders
+  Future noOfAccepted() async {
+    QuerySnapshot accept =
+        await restaurantCollection.doc(uid).collection('acceptHistory').get();
+    int noOfAccept = accept.docs.length;
+    return noOfAccept;
+  }
+
+  Future noOfDeclined() async {
+    QuerySnapshot decline =
+        await restaurantCollection.doc(uid).collection('declineHistory').get();
+    int noOfDecline = decline.docs.length;
+    return noOfDecline;
+  }
+
+  //calculating the total price in the cart
+  Future calcSalesTotalPrice() async {
+    QuerySnapshot accept =
+        await restaurantCollection.doc(uid).collection('acceptHistory').get();
+    double totalSales = 0;
+
+    for (int i = 0; i < accept.docs.length; i++) {
+      var a = accept.docs[i];
+      var snapshot = await restaurantCollection
+          .doc(uid)
+          .collection('acceptHistory')
+          .doc(a.id)
+          .get();
+      double price = snapshot.data()['totalPrice'];
+      totalSales = totalSales + price;
+    }
+    print('total sales: $totalSales');
+    return totalSales;
+  }
+
+  Dashboard _dashboardDataFromSS(DocumentSnapshot snapshot) {
+    return Dashboard(
+      accept: snapshot.data()['accept'] ?? 0,
+      decline: snapshot.data()['decline'] ?? 0,
+      sales: snapshot.data()['sales'] ?? 0.00,
+    );
+  }
+
+  Stream<Dashboard> get dashboard {
+    return restaurantCollection
+        .doc(uid)
+        .collection('dashboard')
+        .doc(uid)
+        .snapshots()
+        .map(_dashboardDataFromSS);
+  }
+
   //? Customer
   //customer data from snapshot
   CustomerData _customerDataFromSS(DocumentSnapshot snapshot) {
@@ -324,33 +398,6 @@ class DatabaseService {
   Future createAccept() async {
     var orderCust = customerCollection.doc(cuid).collection('order').doc(fid);
     await orderCust.update({'accepted': true, 'pending': false});
-    // var acceptCustSub =
-    //     customerCollection.doc(cuid).collection('accept').doc(fid);
-
-    // orderCust.get().then((value) {
-    //   acceptCustSub.set({
-    //     'aid': value.data()['oid'],
-    //     'oid': value.data()['oid'],
-    //     'cuid': value.data()['cuid'],
-    //     'ruid': value.data()['ruid'],
-    //     'message': value.data()['message'],
-    //     'date': value.data()['date'],
-    //     'pickUpTime': value.data()['pickUpTime'],
-    //     'orderTime': value.data()['orderTime'],
-    //     'totalPrice': value.data()['totalPrice'],
-    //     'accepted': true,
-    //     'ready': false,
-    //     'completed': false,
-    //     'pending': false
-    //   });
-    // });
-
-    // //duplicating the fooditem from order into decline
-    // orderCust.collection('fooditem').get().then((value) {
-    //   value.docs.forEach((element) {
-    //     acceptCustSub.collection('fooditem').doc().set(element.data());
-    //   });
-    // });
 
     var orderRest = restaurantCollection.doc(uid).collection('order').doc(fid);
     var acceptRestSub =
@@ -486,34 +533,6 @@ class DatabaseService {
   Future<void> createDecline() async {
     var orderCust = customerCollection.doc(cuid).collection('order').doc(fid);
     await orderCust.update({'accepted': false, 'pending': false});
-    // var orderCust = customerCollection.doc(cuid).collection('order').doc(fid);
-    // var declineCustSub =
-    //     customerCollection.doc(cuid).collection('decline').doc(fid);
-
-    // orderCust.get().then((value) {
-    //   declineCustSub.set({
-    //     'did': value.data()['oid'],
-    //     'oid': value.data()['oid'],
-    //     'cuid': value.data()['cuid'],
-    //     'ruid': value.data()['ruid'],
-    //     'message': value.data()['message'],
-    //     'date': value.data()['date'],
-    //     'pickUpTime': value.data()['pickUpTime'],
-    //     'orderTime': value.data()['orderTime'],
-    //     'totalPrice': value.data()['totalPrice'],
-    //     'accepted': false,
-    //     'ready': false,
-    //     'completed': false,
-    //     'pending': false
-    //   });
-    // });
-
-    // //duplicating the fooditem from order into decline
-    // orderCust.collection('fooditem').get().then((value) {
-    //   value.docs.forEach((element) {
-    //     declineCustSub.collection('fooditem').doc().set(element.data());
-    //   });
-    // });
 
     var orderRest = restaurantCollection.doc(uid).collection('order').doc(fid);
     var declineRestSub =
@@ -1071,46 +1090,5 @@ class DatabaseService {
         .collection('acceptHistory')
         .doc(fid)
         .update({'completed': true});
-
-    // await customerCollection.doc(cuid).collection('order').doc(fid).update({
-    //   'completed': true,
-    // });
-  }
-
-  //retrieving the number of accepted orders
-  Future noOfAccepted() async {
-    QuerySnapshot accept =
-        await restaurantCollection.doc(uid).collection('acceptHistory').get();
-    int noOfAccept = accept.docs.length;
-    // print(noOfAccept);
-    return noOfAccept;
-  }
-
-  Future noOfDeclined() async {
-    QuerySnapshot decline =
-        await restaurantCollection.doc(uid).collection('declineHistory').get();
-    int noOfDecline = decline.docs.length;
-    // print(noOfDecline);
-    return noOfDecline;
-  }
-
-  //calculating the total price in the cart
-  Future calcSalesTotalPrice() async {
-    QuerySnapshot accept =
-        await restaurantCollection.doc(uid).collection('acceptHistory').get();
-    double totalSales = 0;
-
-    for (int i = 0; i < accept.docs.length; i++) {
-      var a = accept.docs[i];
-      var snapshot = await restaurantCollection
-          .doc(uid)
-          .collection('acceptHistory')
-          .doc(a.id)
-          .get();
-      double price = snapshot.data()['totalPrice'];
-      totalSales = totalSales + price;
-    }
-    print('total sales: $totalSales');
-    return totalSales;
   }
 }

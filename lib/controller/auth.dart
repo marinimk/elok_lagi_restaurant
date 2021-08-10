@@ -42,6 +42,8 @@ class AuthService {
           phoneNum,
           false,
           'https://firebasestorage.googleapis.com/v0/b/elok-lagi.appspot.com/o/dafultUser.png?alt=media&token=d817ae55-f30c-47c6-bd75-30348e18eb73');
+
+      await DatabaseService(uid: user.uid).createDashboard(0, 0, 0.0);
       return _userFromFirebaseUser(user);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
