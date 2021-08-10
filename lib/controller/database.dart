@@ -818,8 +818,8 @@ class DatabaseService {
 
     //duplicating order into history
     orderRest.get().then((value) {
-      historyRestSub.set(value.data());
-      historyRestSub.update({
+      // historyRestSub.set(value.data());
+      historyRestSub.set({
         'dhid': fid,
         'cuid': value.data()['cuid'],
         'ruid': value.data()['ruid'],
@@ -834,6 +834,7 @@ class DatabaseService {
         'pending': false,
         'reason': reason
       });
+
       historyCustSub.set({
         'dhid': fid,
         'cuid': cuid,
@@ -878,8 +879,6 @@ class DatabaseService {
       Timestamp orderTS = doc.data()['orderTime'] as Timestamp;
       DateTime orderDT = orderTS.toDate();
 
-      String datee =
-          '${pickUpDT.day.toString().padLeft(2, '0')}/${pickUpDT.month.toString().padLeft(2, '0')}/${pickUpDT.year.toString().padLeft(2, '0')}';
       String orderT = DateFormat('jm').format(orderDT);
       String pickUpT = DateFormat('jm').format(pickUpDT);
       return AcceptHistory(
@@ -904,7 +903,6 @@ class DatabaseService {
     return restaurantCollection
         .doc(uid)
         .collection('acceptHistory')
-        // .orderBy('date', descending: true)
         .orderBy('pickUpTime', descending: true)
         .snapshots()
         .map(_acceptHistoryListFromSS);

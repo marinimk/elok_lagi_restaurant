@@ -1,3 +1,4 @@
+import 'package:elok_lagi_restaurant/view/widgets/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -5,14 +6,7 @@ class Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Center(
-        child: SpinKitWave(
-          type: SpinKitWaveType.center,
-          color: Colors.pink,
-          size: 50.0,
-          itemCount: 10,
-        ),
-      ),
-    );
+        color: Colors.white.withOpacity(0),
+        child: Center(child: SpinKitHourGlass(color: colorsConst[500])));
   }
 }
