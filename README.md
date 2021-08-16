@@ -1,16 +1,10 @@
-# elok_lagi_restaurant
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# ELOK LAGI by MARINI MUSTAFA KAMAL
+**Name:** MARINI MUSTAFA KAMAL <br>
+**Matric number:** A17CS0086<br>
+**SV name:** DR RUHAIDAH SAMSUDIN<br>
+**Project title:** Sustainable Ordering Application System for Surplus Food<br>
+**Application name:** Elok Lagi & Elok Lagi Merchant<br>
+**Project description:** -<br>
+This system consists of two mobile applications that act as a mediator for merchants to promote their surplus food from their restaurants to the public. Malaysia is one of the countries that struggle with food waste and yet the food being thrown away from restaurants are usually still in good condition. So, the main idea of this project is to raise awareness to people that just because the food from the restaurants had passed its selling time, it does not mean that the food is no longer edible.<br>
+**Merchant's application:** https://github.com/marinimk/elok_lagi_restaurant.git <br><br>
+_This project is 100% my idea and my own effort. Yes, I've had inspiration from other systems but the development of this project is fully my own. Therefore, I am so proud of myself 💖_
